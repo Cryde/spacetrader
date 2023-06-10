@@ -1,0 +1,10 @@
+# https://api.spacetraders.io/v2/register
+
+framework:
+    http_client:
+        scoped_clients:
+            space.trader.client:
+                base_uri: 'https://api.spacetraders.io/v2/'
+                headers:
+                    'Content-Type': 'application/json'
+                    Authorization: 'Bearer %env(TOKEN_API)%'
