@@ -10,6 +10,7 @@ class SpaceTraderClient
     final const GET_MY_AGENT = '/v2/my/agent';
     final const GET_MY_CONTRACT_BY_ID = '/v2/my/contracts/';
     final const GET_MY_CONTRACTS = '/v2/my/contracts/';
+    final const GET_MY_SHIPS = '/v2/my/ships/';
 
     public function __construct(private readonly HttpClientInterface $spaceTraderClient)
     {
@@ -28,5 +29,10 @@ class SpaceTraderClient
     public function getContracts(): ResponseInterface
     {
         return $this->spaceTraderClient->request('GET', self::GET_MY_CONTRACTS);
+    }
+
+    public function getMyShips(): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('GET', self::GET_MY_SHIPS);
     }
 }

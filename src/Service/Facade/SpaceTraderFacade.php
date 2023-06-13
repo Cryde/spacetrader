@@ -4,6 +4,7 @@ namespace App\Service\Facade;
 
 use App\Model\Agent;
 use App\Model\Contract\Contract;
+use App\Model\Ship\Ship;
 use App\Service\Client\SpaceTraderClient;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -34,5 +35,12 @@ class SpaceTraderFacade
         $response = $this->spaceTraderClient->getContracts();
 
         return $this->denormalizer->denormalize($response->toArray()['data'], Contract::class . '[]');
+    }
+
+    public function getMyShips()
+    {
+        $response = $this->spaceTraderClient->getMyShips();
+
+        return $this->denormalizer->denormalize($response->toArray()['data'], Ship::class . '[]');
     }
 }
