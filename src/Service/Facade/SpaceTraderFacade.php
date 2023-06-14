@@ -43,4 +43,19 @@ class SpaceTraderFacade
 
         return $this->denormalizer->denormalize($response->toArray()['data'], Ship::class . '[]');
     }
+
+    public function dockShip(string $identifier): void
+    {
+        $this->spaceTraderClient->dockShip($identifier);
+    }
+
+    public function orbitShip(string $identifier): void
+    {
+        $this->spaceTraderClient->orbitShip($identifier);
+    }
+
+    public function sell(string $identifier, string $inventorySymbol, int $quantity): void
+    {
+        $this->spaceTraderClient->sell($identifier, $inventorySymbol, $quantity);
+    }
 }

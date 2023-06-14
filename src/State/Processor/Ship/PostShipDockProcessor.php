@@ -1,0 +1,25 @@
+<?php
+
+namespace App\State\Processor\Ship;
+
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProcessorInterface;
+use App\Model\Ship\Ship;
+use App\Service\Facade\SpaceTraderFacade;
+
+class PostShipDockProcessor implements ProcessorInterface
+{
+    public function __construct(private readonly SpaceTraderFacade $spaceTraderFacade)
+    {
+    }
+
+    /**
+     * @param Ship $data
+     */
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
+    {
+        $this->spaceTraderFacade->dockShip($data->symbol);
+
+        return null;
+    }
+}

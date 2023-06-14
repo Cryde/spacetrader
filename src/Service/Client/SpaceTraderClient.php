@@ -35,4 +35,24 @@ class SpaceTraderClient
     {
         return $this->spaceTraderClient->request('GET', self::GET_MY_SHIPS);
     }
+
+    public function dockShip(string $identifier): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/dock');
+    }
+
+    public function orbitShip(string $identifier): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/orbit');
+    }
+
+    public function sell(string $identifier, string $inventorySymbol, int $quantity): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/sell', [
+            'json' => [
+                "symbol" => $inventorySymbol,
+                "units"  => $quantity,
+            ],
+        ]);
+    }
 }
