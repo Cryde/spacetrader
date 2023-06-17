@@ -5,7 +5,9 @@ namespace App\Model\Ship;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\Exception\LimitExtractionException;
 use App\State\Processor\Ship\PostShipDockProcessor;
+use App\State\Processor\Ship\PostShipExtractProcessor;
 use App\State\Processor\Ship\PostShipOrbitProcessor;
 use App\State\Provider\Chip\MyShipsProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -26,6 +28,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => self::DOCK],
     name: 'api_orbit_ship',
     processor: PostShipOrbitProcessor::class
+)]
+#[Post(
+    uriTemplate: '/ships/extract',
+    denormalizationContext: ['groups' => self::DOCK],
+    name: 'api_ship_extract',
+    processor: PostShipExtractProcessor::class
 )]
 class Ship
 {

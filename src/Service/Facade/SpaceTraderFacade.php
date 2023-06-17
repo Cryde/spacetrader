@@ -54,6 +54,11 @@ class SpaceTraderFacade
         $this->spaceTraderClient->orbitShip($identifier);
     }
 
+    public function extract(string $identifier): void
+    {
+        $this->spaceTraderClient->extract($identifier);
+    }
+
     public function sell(string $identifier, string $inventorySymbol, int $quantity): void
     {
         $this->spaceTraderClient->sell($identifier, $inventorySymbol, $quantity);

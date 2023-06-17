@@ -14,6 +14,10 @@ export default {
     return axios.post(Routing.generate('api_orbit_ship'), data)
     .then(resp => resp.data)
   },
+  extract(data) {
+    return axios.post(Routing.generate('api_ship_extract'), data)
+    .then(resp => resp.data)
+  },
   sell(data) {
     return axios.post(Routing.generate('api_ship_sell'), data)
     .then(resp => resp.data)

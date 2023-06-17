@@ -55,4 +55,9 @@ class SpaceTraderClient
             ],
         ]);
     }
+
+    public function extract(string $identifier): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/extract');
+    }
 }

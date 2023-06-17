@@ -21,6 +21,14 @@
           orbit
         </button>
 
+        <button
+            v-if="ship.nav.status === 'IN_ORBIT'"
+            @click="extract(ship.symbol)"
+            type="button"
+            class="mt-1 ml-2 px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          extract
+        </button>
+
         <div class="mt-2">
         <span
             class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
@@ -104,6 +112,16 @@ async function sell(shipSymbol, unitSymbol, amount) {
     unitSymbol,
     amount
   });
+  reload();
+}
+
+async function extract(symbol) {
+
+  try {
+    await api.extract({symbol});
+  } catch (e) {
+    console.log(e.response);
+  }
   reload();
 }
 
