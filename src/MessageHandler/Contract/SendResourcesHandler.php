@@ -3,8 +3,8 @@
 namespace App\MessageHandler\Contract;
 
 use App\Message\Contract\SendResources;
+use App\Message\Extract\Extract;
 use App\Model\Error;
-use App\Model\Extract\Extract;
 use App\Service\Cache\CacheFactory;
 use App\Service\Facade\SpaceTraderFacade;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -45,7 +45,9 @@ class SendResourcesHandler
                 $sendResourcesMessage->getWaypointSymbolReturn()
             );
             $seconds = $navigation->nav->route->arrival->getTimestamp() - (new \DateTimeImmutable())->getTimestamp();
-            $this->bus->dispatch(new Extract(), [
+            $this->bus->dispatch(new Extract(
+                $sendResourcesMessage->getShipSymbol()
+            ), [
                 new DelayStamp(1000 * ($seconds + 2)),
             ]);
         } catch (HttpExceptionInterface $e) {

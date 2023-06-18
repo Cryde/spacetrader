@@ -20,6 +20,17 @@
           <strong>Destination symbol</strong> : {{ deliver.destinationSymbol }}<br/>
           <strong>Unit required</strong> : {{ deliver.unitsRequired }}<br/>
           <strong>Unit completed</strong> : {{ deliver.unitsFulfilled }}<br/>
+          <div class="flex justify-between mb-1">
+            <span class="text-base font-medium text-blue-700 dark:text-white">Progression</span>
+            <span
+                class="text-sm font-medium text-blue-700 dark:text-white">{{
+                getPercentFull(deliver.unitsRequired, deliver.unitsFulfilled)
+              }}%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div class="bg-blue-600 h-2.5 rounded-full"
+                 :style="`width: ${getPercentFull(deliver.unitsRequired, deliver.unitsFulfilled)}%`"></div>
+          </div>
         </div>
       </div>
     </template>
@@ -43,5 +54,9 @@ async function reload() {
 
 async function getContracts() {
   return (await api.getMyContracts())['hydra:member'];
+}
+
+function getPercentFull(total, current) {
+  return current / (total / 100);
 }
 </script>
