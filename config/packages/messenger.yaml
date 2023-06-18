@@ -12,6 +12,10 @@ framework:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
             cargo_quantity_check:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            contract_navigate:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            contract_send_resources:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
             failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
 
@@ -20,5 +24,7 @@ framework:
             App\Message\Sell\Sell: sell
             App\Message\Sell\SellCargo: sell_cargo
             App\Message\Cargo\CargoQuantityCheck: cargo_quantity_check
+            App\Message\Contract\NavigateContract: contract_navigate
+            App\Message\Contract\SendResources: contract_send_resources
             # Route your messages to the transports
             # 'App\Message\YourMessage': async

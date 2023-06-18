@@ -8,7 +8,7 @@
         <span
             class="ml-3 bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ ship.nav.waypointSymbol }}</span>
         <span
-            class="ml-3 bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">status: {{ ship.nav.status }}</span>
+            class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">status: {{ ship.nav.status }}</span>
         <span
             class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">role: {{ ship.registration.role }}</span>
 

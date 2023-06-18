@@ -38,12 +38,12 @@ class SpaceTraderClient
 
     public function getMyShip(string $symbol): ResponseInterface
     {
-        return $this->spaceTraderClient->request('GET', self::GET_MY_SHIPS . '/' . $symbol);
+        return $this->spaceTraderClient->request('GET', self::GET_MY_SHIPS . $symbol);
     }
 
     public function navigate(string $shipSymbol, string $waypointSymbol): ResponseInterface
     {
-        return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . '/' . $shipSymbol . '/navigate', [
+        return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $shipSymbol . '/navigate', [
             'json' => [
                 'waypointSymbol' => $waypointSymbol,
             ],

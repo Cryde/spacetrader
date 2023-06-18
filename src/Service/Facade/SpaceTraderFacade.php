@@ -45,7 +45,7 @@ class SpaceTraderFacade
 
         return $cache->get('my_contracts', function (ItemInterface $item) {
             $item->expiresAfter(3600);
-            $item->tag(['my_contracts']);
+            $item->tag([CacheFactory::TAG_MY_CONTRACTS]);
             $response = $this->spaceTraderClient->getContracts();
 
             return $this->denormalizer->denormalize($response->toArray()['data'], Contract::class . '[]');

@@ -3,11 +3,12 @@
 namespace App\Service\Cache;
 
 use Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter;
-use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 class CacheFactory
 {
-    public function create(): CacheInterface
+    const TAG_MY_CONTRACTS = 'my_contracts';
+    public function create(): TagAwareCacheInterface
     {
         return new FilesystemTagAwareAdapter(
             'file_cache',

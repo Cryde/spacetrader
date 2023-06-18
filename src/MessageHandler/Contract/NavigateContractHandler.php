@@ -25,7 +25,6 @@ class NavigateContractHandler
 
     public function __invoke(NavigateContract $sendResourcesMessage)
     {
-        // todo handle resend in queue and then "already" there or still in navigation
         try {
             $this->spaceTraderFacade->orbitShip($sendResourcesMessage->getShipSymbol());
             $navigation = $this->spaceTraderFacade->navigate(
