@@ -4,15 +4,21 @@ namespace App\Service\Facade;
 
 use App\Model\Agent;
 use App\Model\Contract\Contract;
+use App\Model\Error;
+use App\Model\Extract\Extract;
+use App\Model\Navigation\Navigation;
 use App\Model\Ship\Ship;
+use App\Service\Cache\CacheFactory;
 use App\Service\Client\SpaceTraderClient;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class SpaceTraderFacade
 {
     public function __construct(
         private readonly SpaceTraderClient     $spaceTraderClient,
-        private readonly DenormalizerInterface $denormalizer
+        private readonly DenormalizerInterface $denormalizer,
+        private readonly CacheFactory          $cacheFactory
     ) {
     }
 
@@ -30,11 +36,20 @@ class SpaceTraderFacade
         return $this->denormalizer->denormalize($response->toArray()['data'], Contract::class);
     }
 
-    public function getContracts()
+    /**
+     * @return Contract[]
+     */
+    public function getContracts(): array
     {
-        $response = $this->spaceTraderClient->getContracts();
+        $cache = $this->cacheFactory->create();
 
-        return $this->denormalizer->denormalize($response->toArray()['data'], Contract::class . '[]');
+        return $cache->get('my_contracts', function (ItemInterface $item) {
+            $item->expiresAfter(3600);
+            $item->tag(['my_contracts']);
+            $response = $this->spaceTraderClient->getContracts();
+
+            return $this->denormalizer->denormalize($response->toArray()['data'], Contract::class . '[]');
+        });
     }
 
     public function getMyShips()
@@ -42,6 +57,20 @@ class SpaceTraderFacade
         $response = $this->spaceTraderClient->getMyShips();
 
         return $this->denormalizer->denormalize($response->toArray()['data'], Ship::class . '[]');
+    }
+
+    public function navigate(string $shipSymbol, string $waypointSymbol): Navigation
+    {
+        $response = $this->spaceTraderClient->navigate($shipSymbol, $waypointSymbol);
+
+        return $this->denormalizer->denormalize($response->toArray()['data'], Navigation::class);
+    }
+
+    public function getShip(string $identifier): Ship
+    {
+        $response = $this->spaceTraderClient->getMyShip($identifier);
+
+        return $this->denormalizer->denormalize($response->toArray()['data'], Ship::class);
     }
 
     public function dockShip(string $identifier): void
@@ -54,13 +83,21 @@ class SpaceTraderFacade
         $this->spaceTraderClient->orbitShip($identifier);
     }
 
-    public function extract(string $identifier): void
+    public function extract(string $identifier): Extract|Error
     {
-        $this->spaceTraderClient->extract($identifier);
+        $response = $this->spaceTraderClient->extract($identifier);
+
+        return $this->denormalizer->denormalize($response->toArray()['data'], Extract::class);
     }
 
     public function sell(string $identifier, string $inventorySymbol, int $quantity): void
     {
-        $this->spaceTraderClient->sell($identifier, $inventorySymbol, $quantity);
+        $response = $this->spaceTraderClient->sell($identifier, $inventorySymbol, $quantity);
+    }
+
+    public function deliverContract(string $shipSymbol, string $contractId, string $tradeSymbol, int $units)
+    {
+        $response = $this->spaceTraderClient->deliverContract($shipSymbol, $contractId, $tradeSymbol, $units);
+        dump($response->toArray()['data']);
     }
 }

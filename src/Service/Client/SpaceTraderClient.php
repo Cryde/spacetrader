@@ -36,6 +36,20 @@ class SpaceTraderClient
         return $this->spaceTraderClient->request('GET', self::GET_MY_SHIPS);
     }
 
+    public function getMyShip(string $symbol): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('GET', self::GET_MY_SHIPS . '/' . $symbol);
+    }
+
+    public function navigate(string $shipSymbol, string $waypointSymbol): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . '/' . $shipSymbol . '/navigate', [
+            'json' => [
+                'waypointSymbol' => $waypointSymbol,
+            ],
+        ]);
+    }
+
     public function dockShip(string $identifier): ResponseInterface
     {
         return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/dock');
@@ -52,6 +66,21 @@ class SpaceTraderClient
             'json' => [
                 "symbol" => $inventorySymbol,
                 "units"  => $quantity,
+            ],
+        ]);
+    }
+
+    public function deliverContract(
+        string $shipSymbol,
+        string $contractId,
+        string $tradeSymbol,
+        int    $units
+    ): ResponseInterface {
+        return $this->spaceTraderClient->request('POST', self::GET_MY_CONTRACTS . $contractId . '/deliver', [
+            'json' => [
+                "shipSymbol"  => $shipSymbol,
+                "tradeSymbol" => $tradeSymbol,
+                "units"       => $units,
             ],
         ]);
     }

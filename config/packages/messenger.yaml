@@ -4,21 +4,21 @@ framework:
 
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
-            async:
+            extract:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                options:
-                    use_notify: true
-                    check_delayed_interval: 60000
-                retry_strategy:
-                    max_retries: 3
-                    multiplier: 2
+            sell:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            sell_cargo:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            cargo_quantity_check:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
             failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
 
         routing:
-            Symfony\Component\Mailer\Messenger\SendEmailMessage: async
-            Symfony\Component\Notifier\Message\ChatMessage: async
-            Symfony\Component\Notifier\Message\SmsMessage: async
-
+            App\Message\Extract\Extract: extract
+            App\Message\Sell\Sell: sell
+            App\Message\Sell\SellCargo: sell_cargo
+            App\Message\Cargo\CargoQuantityCheck: cargo_quantity_check
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
