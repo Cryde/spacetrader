@@ -89,4 +89,13 @@ class SpaceTraderClient
     {
         return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/extract');
     }
+
+    public function refuel(string $shipSymbol, int $units): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $shipSymbol . '/refuel', [
+            'json' => [
+                'units' => $units,
+            ],
+        ]);
+    }
 }

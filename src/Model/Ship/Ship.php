@@ -44,4 +44,5 @@ class Ship
     public Nav $nav;
     public Registration $registration;
     public Cargo $cargo;
+    public Fuel $fuel;
 }

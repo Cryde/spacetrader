@@ -100,4 +100,10 @@ class SpaceTraderFacade
         $response = $this->spaceTraderClient->deliverContract($shipSymbol, $contractId, $tradeSymbol, $units);
         dump($response->toArray()['data']);
     }
+
+    public function refuel(string $shipSymbol, int $units)
+    {
+        $response = $this->spaceTraderClient->refuel($shipSymbol, $units);
+        dump($response->toArray()['data']);
+    }
 }

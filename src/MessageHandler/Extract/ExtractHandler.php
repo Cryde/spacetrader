@@ -21,7 +21,7 @@ class ExtractHandler
         private readonly SpaceTraderFacade     $spaceTraderFacade,
         private readonly MessageBusInterface   $bus,
         private readonly DenormalizerInterface $denormalizer,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface       $logger
     ) {
     }
 
@@ -35,7 +35,6 @@ class ExtractHandler
 
                 return;
             }
-
             sleep(1);
             // 2. we extract
             $extract = $this->spaceTraderFacade->extract($extractMessage->getSymbol());
@@ -73,6 +72,7 @@ class ExtractHandler
             }
             if ($error->code === ErrorCode::NOT_VALID_MINING_SITE) {
                 $this->logger->error('Not on a valid site to mine');
+
                 // we do nothing.
                 return;
             }

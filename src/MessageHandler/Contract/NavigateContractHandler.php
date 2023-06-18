@@ -7,6 +7,7 @@ use App\Message\Contract\NavigateContract;
 use App\Message\Contract\SendResources;
 use App\Model\Error;
 use App\Service\Facade\SpaceTraderFacade;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
@@ -19,18 +20,33 @@ class NavigateContractHandler
     public function __construct(
         private readonly SpaceTraderFacade     $spaceTraderFacade,
         private readonly MessageBusInterface   $bus,
-        private readonly DenormalizerInterface $denormalizer
+        private readonly DenormalizerInterface $denormalizer,
+        private readonly LoggerInterface $logger
     ) {
     }
 
     public function __invoke(NavigateContract $sendResourcesMessage)
     {
+        $shipSymbol = $sendResourcesMessage->getShipSymbol();
         try {
-            $this->spaceTraderFacade->orbitShip($sendResourcesMessage->getShipSymbol());
+            $ship = $this->spaceTraderFacade->getShip($shipSymbol);
+            if ($ship->fuel->isRefuelNeeded()) {
+                $this->logger->alert('Ship {shipSymbol} need to be refueld', ['shipSymbol' => $shipSymbol]);
+                // we need to be docked to be refuel
+                $this->spaceTraderFacade->refuel($shipSymbol, $ship->fuel->neededFuel());
+                sleep(1);
+            }
+
+            $this->spaceTraderFacade->orbitShip($shipSymbol);
+            $this->logger->info('Ship {shipSymbol} put in orbit', ['shipSymbol' => $shipSymbol]);
             $navigation = $this->spaceTraderFacade->navigate(
-                $sendResourcesMessage->getShipSymbol(),
+                $shipSymbol,
                 $sendResourcesMessage->getWaypointSymbol()
             );
+            $this->logger->info('Ship {shipSymbol} is navigating to {ws}', [
+                'shipSymbol' => $shipSymbol,
+                'ws' => $sendResourcesMessage->getWaypointSymbol()
+            ]);
             $seconds = $navigation->nav->route->arrival->getTimestamp() - (new \DateTimeImmutable())->getTimestamp();
         } catch (HttpExceptionInterface $e) {
             $errorData = $e->getResponse()->toArray(false)['error'] ?? null;
@@ -55,7 +71,7 @@ class NavigateContractHandler
             $seconds = 1;
         }
         $this->bus->dispatch(new SendResources(
-            $sendResourcesMessage->getShipSymbol(),
+            $shipSymbol,
             $sendResourcesMessage->getWaypointSymbolReturn(),
             $sendResourcesMessage->getWaypointSymbol(),
             $sendResourcesMessage->getContractId(),
