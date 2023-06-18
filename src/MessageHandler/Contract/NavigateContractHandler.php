@@ -25,7 +25,7 @@ class NavigateContractHandler
     ) {
     }
 
-    public function __invoke(NavigateContract $sendResourcesMessage)
+    public function __invoke(NavigateContract $sendResourcesMessage): void
     {
         $shipSymbol = $sendResourcesMessage->getShipSymbol();
         try {
