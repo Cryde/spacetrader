@@ -4,9 +4,9 @@ namespace App\State\Processor\Ship;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\ApiResource\Ship\Ship;
 use App\Exception\LimitExtractionException;
 use App\Message\Extract\Extract;
-use App\Model\Ship\Ship;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;

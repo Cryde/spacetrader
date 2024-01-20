@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Extract;
+namespace App\ApiResource\Extract;
 class CoolDown
 {
     public string $shipSymbol;

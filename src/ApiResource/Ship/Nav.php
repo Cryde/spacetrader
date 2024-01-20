@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model\Ship;
+namespace App\ApiResource\Ship;
 
-use App\Model\Navigation\Route;
+use App\ApiResource\Navigation\Route;
 
 class Nav
 {

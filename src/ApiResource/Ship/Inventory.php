@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Ship;
+namespace App\ApiResource\Ship;
 class Inventory
 {
     public string $symbol;

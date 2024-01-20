@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Contract;
+namespace App\ApiResource\Contract;
 class Payment
 {
     public int $onAccepted;

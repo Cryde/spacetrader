@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Contract;
+namespace App\ApiResource\Contract;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\Get;

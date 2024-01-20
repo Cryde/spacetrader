@@ -2,12 +2,12 @@
 
 namespace App\Service\Facade;
 
-use App\Model\Agent;
-use App\Model\Contract\Contract;
-use App\Model\Error;
-use App\Model\Extract\Extract;
-use App\Model\Navigation\Navigation;
-use App\Model\Ship\Ship;
+use App\ApiResource\Agent;
+use App\ApiResource\Contract\Contract;
+use App\ApiResource\Error;
+use App\ApiResource\Extract\Extract;
+use App\ApiResource\Navigation\Navigation;
+use App\ApiResource\Ship\Ship;
 use App\Service\Cache\CacheFactory;
 use App\Service\Client\SpaceTraderClient;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

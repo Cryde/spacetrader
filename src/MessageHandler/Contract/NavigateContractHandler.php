@@ -2,10 +2,10 @@
 
 namespace App\MessageHandler\Contract;
 
+use App\ApiResource\Error;
 use App\Contract\ErrorCode;
 use App\Message\Contract\NavigateContract;
 use App\Message\Contract\SendResources;
-use App\Model\Error;
 use App\Service\Facade\SpaceTraderFacade;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

@@ -2,9 +2,9 @@
 
 namespace App\MessageHandler\Contract;
 
+use App\ApiResource\Error;
 use App\Message\Contract\SendResources;
 use App\Message\Extract\Extract;
-use App\Model\Error;
 use App\Service\Cache\CacheFactory;
 use App\Service\Facade\SpaceTraderFacade;
 use Psr\Log\LoggerInterface;

@@ -2,10 +2,10 @@
 
 namespace App\MessageHandler\Extract;
 
+use App\ApiResource\Error;
 use App\Contract\ErrorCode;
 use App\Message\Extract\Extract;
 use App\Message\Sell\SellCargo;
-use App\Model\Error;
 use App\Service\Facade\SpaceTraderFacade;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

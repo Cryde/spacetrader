@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Navigation;
+namespace App\ApiResource\Navigation;
 class Route
 {
     public \DateTimeImmutable $arrival;

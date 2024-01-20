@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Model\Ship;
+namespace App\ApiResource\Ship;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
-use App\Exception\LimitExtractionException;
 use App\State\Processor\Ship\PostShipDockProcessor;
 use App\State\Processor\Ship\PostShipExtractProcessor;
 use App\State\Processor\Ship\PostShipOrbitProcessor;

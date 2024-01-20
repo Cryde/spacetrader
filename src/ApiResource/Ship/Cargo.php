@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Ship;
+namespace App\ApiResource\Ship;
 class Cargo
 {
     public int $capacity;

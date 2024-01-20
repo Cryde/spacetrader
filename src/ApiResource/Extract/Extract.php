@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model\Extract;
+namespace App\ApiResource\Extract;
 
-use App\Model\Ship\Cargo;
+use App\ApiResource\Ship\Cargo;
 
 class Extract
 {

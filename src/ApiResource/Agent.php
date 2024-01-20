@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\ApiResource;
 
 use ApiPlatform\Metadata\Get;
 use App\State\Provider\Agent\AgentProvider;

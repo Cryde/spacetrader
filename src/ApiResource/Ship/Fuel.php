@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Ship;
+namespace App\ApiResource\Ship;
 class Fuel
 {
     const LIMIT_PERCENT_REFUEL = 50;

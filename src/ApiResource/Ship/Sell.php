@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Ship;
+namespace App\ApiResource\Ship;
 
 use ApiPlatform\Metadata\Post;
 use App\State\Processor\Ship\PostShipSellProcessor;

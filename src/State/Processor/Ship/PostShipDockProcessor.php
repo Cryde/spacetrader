@@ -4,7 +4,7 @@ namespace App\State\Processor\Ship;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Model\Ship\Ship;
+use App\ApiResource\Ship\Ship;
 use App\Service\Facade\SpaceTraderFacade;
 
 class PostShipDockProcessor implements ProcessorInterface

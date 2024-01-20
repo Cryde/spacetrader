@@ -2,8 +2,8 @@
 
 namespace App\MessageHandler\Sell;
 
+use App\ApiResource\Error;
 use App\Message\Sell\Sell;
-use App\Model\Error;
 use App\Service\Facade\SpaceTraderFacade;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
