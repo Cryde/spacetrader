@@ -25,7 +25,7 @@ class SellCargoHandler
         $contracts = $this->spaceTraderFacade->getContracts();
         $excludedFromSells = [];
         foreach ($contracts as $contract) {
-            if ($contract->accepted) {
+            if ($contract->accepted && !$contract->fulfilled) {
                 foreach ($contract->terms->deliver as $deliver) {
                     $excludedFromSells[] = $deliver->tradeSymbol;
                 }

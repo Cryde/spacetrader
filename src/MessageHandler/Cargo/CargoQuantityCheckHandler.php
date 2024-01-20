@@ -52,7 +52,7 @@ class CargoQuantityCheckHandler
         $result = [];
         $contracts = $this->spaceTraderFacade->getContracts();
         foreach ($contracts as $contract) {
-            if ($contract->accepted) {
+            if ($contract->accepted && !$contract->fulfilled) {
                 foreach ($contract->terms->deliver as $deliver) {
                     // possible soucis: si 2 contract on le même trade symbol
                     $result[$deliver->tradeSymbol] = ['destination' => $deliver->destinationSymbol, 'contract_id' => $contract->id];
