@@ -9,6 +9,7 @@ class SpaceTraderClient
 {
     final const GET_MY_AGENT = '/v2/my/agent';
     final const GET_MY_CONTRACT_BY_ID = '/v2/my/contracts/';
+    final const POST_ACCEPT_CONTRACT_BY_ID = '/v2/my/contracts/%s/accept';
     final const GET_MY_CONTRACTS = '/v2/my/contracts/';
     final const GET_MY_SHIPS = '/v2/my/ships/';
 
@@ -24,6 +25,11 @@ class SpaceTraderClient
     public function getContract(string $id): ResponseInterface
     {
         return $this->spaceTraderClient->request('GET', self::GET_MY_CONTRACT_BY_ID . $id);
+    }
+
+    public function acceptContract(string $id): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', sprintf(self::POST_ACCEPT_CONTRACT_BY_ID, $id));
     }
 
     public function getContracts(): ResponseInterface

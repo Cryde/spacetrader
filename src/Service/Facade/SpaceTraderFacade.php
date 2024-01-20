@@ -13,12 +13,12 @@ use App\Service\Client\SpaceTraderClient;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-class SpaceTraderFacade
+readonly class SpaceTraderFacade
 {
     public function __construct(
-        private readonly SpaceTraderClient     $spaceTraderClient,
-        private readonly DenormalizerInterface $denormalizer,
-        private readonly CacheFactory          $cacheFactory
+        private SpaceTraderClient     $spaceTraderClient,
+        private DenormalizerInterface $denormalizer,
+        private CacheFactory          $cacheFactory
     ) {
     }
 
@@ -34,6 +34,16 @@ class SpaceTraderFacade
         $response = $this->spaceTraderClient->getContract($id);
 
         return $this->denormalizer->denormalize($response->toArray()['data'], Contract::class);
+    }
+
+    public function acceptContact(string $id): Contract
+    {
+        $response = $this->spaceTraderClient->acceptContract($id);
+
+        $cache = $this->cacheFactory->create();
+        $cache->invalidateTags([CacheFactory::TAG_MY_CONTRACTS]);
+
+        return $this->denormalizer->denormalize($response->toArray()['data']['contract'], Contract::class);
     }
 
     /**
