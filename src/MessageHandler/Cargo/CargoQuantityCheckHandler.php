@@ -20,7 +20,7 @@ class CargoQuantityCheckHandler
 
     public function __invoke(CargoQuantityCheck $cargoQuantityCheckMessage): void
     {
-        $shipSymbol = $cargoQuantityCheckMessage->getShipSymbol();
+        $shipSymbol = $cargoQuantityCheckMessage->shipSymbol;
         $ship = $this->spaceTraderFacade->getShip($shipSymbol);
         if ($ship->cargo->capacity > $ship->cargo->units) {
             $this->spaceTraderFacade->orbitShip($shipSymbol);

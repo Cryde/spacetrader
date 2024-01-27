@@ -27,7 +27,7 @@ class NavigateContractHandler
 
     public function __invoke(NavigateContract $sendResourcesMessage): void
     {
-        $shipSymbol = $sendResourcesMessage->getShipSymbol();
+        $shipSymbol = $sendResourcesMessage->shipSymbol;
         try {
             $ship = $this->spaceTraderFacade->getShip($shipSymbol);
             if ($ship->fuel->isRefuelNeeded()) {
@@ -41,11 +41,11 @@ class NavigateContractHandler
             $this->logger->info('Ship {shipSymbol} put in orbit', ['shipSymbol' => $shipSymbol]);
             $navigation = $this->spaceTraderFacade->navigate(
                 $shipSymbol,
-                $sendResourcesMessage->getWaypointSymbol()
+                $sendResourcesMessage->waypointSymbol
             );
             $this->logger->info('Ship {shipSymbol} is navigating to {ws}', [
                 'shipSymbol' => $shipSymbol,
-                'ws' => $sendResourcesMessage->getWaypointSymbol()
+                'ws' => $sendResourcesMessage->waypointSymbol
             ]);
             $seconds = $navigation->nav->route->arrival->getTimestamp() - (new \DateTimeImmutable())->getTimestamp();
         } catch (HttpExceptionInterface $e) {
@@ -72,11 +72,11 @@ class NavigateContractHandler
         }
         $this->bus->dispatch(new SendResources(
             $shipSymbol,
-            $sendResourcesMessage->getWaypointSymbolReturn(),
-            $sendResourcesMessage->getWaypointSymbol(),
-            $sendResourcesMessage->getContractId(),
-            $sendResourcesMessage->getTradSymbol(),
-            $sendResourcesMessage->getUnits(),
+            $sendResourcesMessage->waypointSymbolReturn,
+            $sendResourcesMessage->waypointSymbol,
+            $sendResourcesMessage->contractId,
+            $sendResourcesMessage->tradSymbol,
+            $sendResourcesMessage->units,
         ), [
             new DelayStamp(1000 * ($seconds + 2)),
         ]);

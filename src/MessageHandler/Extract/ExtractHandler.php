@@ -29,24 +29,24 @@ class ExtractHandler
     {
         try {
             // 1. first we check if the cargo is full
-            $ship = $this->spaceTraderFacade->getShip($extractMessage->getSymbol());
+            $ship = $this->spaceTraderFacade->getShip($extractMessage->symbol);
             if ($ship->cargo->capacity === $ship->cargo->units) {
-                $this->bus->dispatch(new SellCargo($extractMessage->getSymbol()));
+                $this->bus->dispatch(new SellCargo($extractMessage->symbol));
 
                 return;
             }
             sleep(1);
             // 2. we extract
-            $extract = $this->spaceTraderFacade->extract($extractMessage->getSymbol());
+            $extract = $this->spaceTraderFacade->extract($extractMessage->symbol);
             // 3. if we are full, it's time to sell !
             if ($extract->cargo->capacity === $extract->cargo->units) {
-                $this->bus->dispatch(new SellCargo($extractMessage->getSymbol()));
+                $this->bus->dispatch(new SellCargo($extractMessage->symbol));
 
                 return;
             }
             // todo detect fuel issue !!
             // redispatch an extraction !
-            $this->bus->dispatch(new Extract($extractMessage->getSymbol()), [
+            $this->bus->dispatch(new Extract($extractMessage->symbol), [
                 new DelayStamp(1000 * $extract->cooldown->remainingSeconds),
             ]);
         } catch (HttpExceptionInterface $e) {
@@ -58,13 +58,13 @@ class ExtractHandler
             $error = $this->denormalizer->denormalize($errorData, Error::class);
             if ($error->code === ErrorCode::SHIP_CARGO_IS_FULL) {
                 $this->logger->error('Ship cargo is full!');
-                $this->bus->dispatch(new SellCargo($extractMessage->getSymbol()));
+                $this->bus->dispatch(new SellCargo($extractMessage->symbol));
 
                 return;
             }
             if ($error->code === ErrorCode::SHIP_COOL_DOWN) {
                 $this->logger->error('Ship has a cooldown');
-                $this->bus->dispatch(new Extract($extractMessage->getSymbol()), [
+                $this->bus->dispatch(new Extract($extractMessage->symbol), [
                     new DelayStamp(1000 * $error->data['cooldown']['remainingSeconds']),
                 ]);
 

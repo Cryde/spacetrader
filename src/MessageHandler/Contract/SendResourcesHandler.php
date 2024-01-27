@@ -28,16 +28,16 @@ class SendResourcesHandler
 
     public function __invoke(SendResources $sendResourcesMessage): void
     {
-        $shipSymbol = $sendResourcesMessage->getShipSymbol();
+        $shipSymbol = $sendResourcesMessage->shipSymbol;
         try {
             $cache = $this->cacheFactory->create();
             $this->spaceTraderFacade->dockShip($shipSymbol);
             sleep(1);
             $this->spaceTraderFacade->deliverContract(
                 $shipSymbol,
-                $sendResourcesMessage->getContractId(),
-                $sendResourcesMessage->getTradSymbol(),
-                $sendResourcesMessage->getUnits()
+                $sendResourcesMessage->contractId,
+                $sendResourcesMessage->tradSymbol,
+                $sendResourcesMessage->units
             );
             $cache->invalidateTags([CacheFactory::TAG_MY_CONTRACTS]);
             $ship = $this->spaceTraderFacade->getShip($shipSymbol);
@@ -51,7 +51,7 @@ class SendResourcesHandler
             sleep(1);
             $navigation = $this->spaceTraderFacade->navigate(
                 $shipSymbol,
-                $sendResourcesMessage->getWaypointSymbolReturn()
+                $sendResourcesMessage->waypointSymbolReturn
             );
             $seconds = $navigation->nav->route->arrival->getTimestamp() - (new \DateTimeImmutable())->getTimestamp();
             $this->bus->dispatch(new Extract(
