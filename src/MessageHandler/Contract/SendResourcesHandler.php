@@ -12,6 +12,8 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
 #[AsMessageHandler]
@@ -21,7 +23,7 @@ class SendResourcesHandler
         private readonly SpaceTraderFacade     $spaceTraderFacade,
         private readonly MessageBusInterface   $bus,
         private readonly DenormalizerInterface $denormalizer,
-        private readonly CacheFactory $cacheFactory,
+        private readonly TagAwareCacheInterface $cache,
         private readonly LoggerInterface $logger
     ) {
     }
@@ -30,7 +32,6 @@ class SendResourcesHandler
     {
         $shipSymbol = $sendResourcesMessage->shipSymbol;
         try {
-            $cache = $this->cacheFactory->create();
             $this->spaceTraderFacade->dockShip($shipSymbol);
             sleep(1);
             $this->spaceTraderFacade->deliverContract(
@@ -39,7 +40,7 @@ class SendResourcesHandler
                 $sendResourcesMessage->tradSymbol,
                 $sendResourcesMessage->units
             );
-            $cache->invalidateTags([CacheFactory::TAG_MY_CONTRACTS]);
+            $this->cache->invalidateTags([CacheFactory::TAG_MY_CONTRACTS]);
             $ship = $this->spaceTraderFacade->getShip($shipSymbol);
             if ($ship->fuel->isRefuelNeeded()) {
                 $this->logger->alert('Ship {shipSymbol} need to be refueld', ['shipSymbol' => $shipSymbol]);

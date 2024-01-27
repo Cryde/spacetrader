@@ -1,6 +1,8 @@
 framework:
     cache:
-        # Unique name of your app: used to compute stable namespaces for cache keys.
+        app: cache.adapter.redis_tag_aware
+        system: cache.adapter.redis
+          # Unique name of your app: used to compute stable namespaces for cache keys.
         #prefix_seed: your_vendor_name/app_name
 
         # The "app" cache stores to the filesystem by default.
@@ -9,7 +11,7 @@ framework:
 
         # Redis
         #app: cache.adapter.redis
-        #default_redis_provider: redis://localhost
+        default_redis_provider: '%env(REDIS_URL)%'
 
         # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
         #app: cache.adapter.apcu

@@ -15,13 +15,14 @@ use App\Service\Cache\CacheFactory;
 use App\Service\Client\SpaceTraderClient;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 readonly class SpaceTraderFacade
 {
     public function __construct(
-        private SpaceTraderClient     $spaceTraderClient,
+        private SpaceTraderClient $spaceTraderClient,
         private DenormalizerInterface $denormalizer,
-        private CacheFactory          $cacheFactory
+        private TagAwareCacheInterface $cache
     ) {
     }
 
@@ -42,9 +43,7 @@ readonly class SpaceTraderFacade
     public function acceptContact(string $id): Contract
     {
         $response = $this->spaceTraderClient->acceptContract($id);
-
-        $cache = $this->cacheFactory->create();
-        $cache->invalidateTags([CacheFactory::TAG_MY_CONTRACTS]);
+        $this->cache->invalidateTags([CacheFactory::TAG_MY_CONTRACTS]);
 
         return $this->denormalizer->denormalize($response->toArray()['data']['contract'], Contract::class);
     }
@@ -54,9 +53,7 @@ readonly class SpaceTraderFacade
      */
     public function getContracts(): array
     {
-        $cache = $this->cacheFactory->create();
-
-        return $cache->get('my_contracts', function (ItemInterface $item) {
+        return $this->cache->get('my_contracts', function (ItemInterface $item) {
             $item->expiresAfter(3600);
             $item->tag([CacheFactory::TAG_MY_CONTRACTS]);
             $response = $this->spaceTraderClient->getContracts();
@@ -98,7 +95,6 @@ readonly class SpaceTraderFacade
         return $this->denormalizer->denormalize($response->toArray()['data']['ship'], Ship::class);
     }
 
-
     public function orbitShip(string $identifier): void
     {
         $this->spaceTraderClient->orbitShip($identifier);
@@ -127,8 +123,8 @@ readonly class SpaceTraderFacade
     }
 
     public function getWaypointsBySystemSymbol(
-        string $systemSymbol,
-        int $page,
+        string  $systemSymbol,
+        int     $page,
         ?string $trait = null,
         ?string $type = null
     ): WaypointsResult {
