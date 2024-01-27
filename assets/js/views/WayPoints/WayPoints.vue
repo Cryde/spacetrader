@@ -88,7 +88,52 @@
       <template #content>
 
         <h3 class="font">{{ shipyard.symbol }}</h3>
-        {{ shipyard }}
+        <span class="badge badge-primary mr-1 mb-1" v-for="shipType in shipyard.shipTypes">{{ shipType.type }}</span>
+
+        <ul role="list" class="divide-y divide-gray-700">
+          <li class="flex justify-between gap-x-6 py-5"
+              v-if="shipyard.ships"
+              v-for="ship in shipyard.ships">
+            <div class="flex min-w-0 gap-x-4">
+              <div class="min-w-0 flex-auto">
+                <p class="text-sm font-semibold text-white">
+                  {{ ship.name }} <span class="font-light text-xs text-gray-400 ml-3">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                       stroke="currentColor" class="w-3 h-3 inline">
+  <path stroke-linecap="round" stroke-linejoin="round"
+        d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+</svg> {{ formatMoney(ship.purchasePrice) }}
+                  </span>
+                </p>
+                <div class="mt-1 text-xs leading-5 text-gray-300">
+                  {{ ship.description }}<br/>
+
+                  <div v-if="ship.modules.length" class="mt-3">
+                    Modules :
+                    <div class="tooltip" :data-tip="formatModuleDescription(module)" v-for="module in ship.modules">
+                      <span class="badge badge-primary mr-1 mb-1">{{ module.symbol }}</span>
+                    </div>
+                  </div>
+
+                  <div v-if="ship.mounts.length" class="mt-3">
+                    Mounts :
+                    <div class="tooltip" :data-tip="formatMountDescription(mount)" v-for="mount in ship.mounts">
+                      <span class="badge badge-primary mr-1 mb-1">{{ mount.symbol }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+              <p class="text-sm leading-6 text-white">
+                todo
+              </p>
+              <p class="text-sm leading-5 text-white mt-2">
+                todo
+              </p>
+            </div>
+          </li>
+        </ul>
       </template>
     </Box>
   </div>
@@ -97,6 +142,7 @@
 import Box from "../../components/Box.vue";
 import {onMounted, ref} from "vue";
 import api from '../../api/system';
+import {formatMoney} from "../../helper/formatter";
 
 const waypoints = ref(null);
 const systemSymbolRef = ref(null);
@@ -141,5 +187,23 @@ function hasShipyard(waypoint) {
 
 function hasMarket(waypoint) {
   return waypoint.traits.find((trait) => trait.symbol === 'MARKETPLACE') !== undefined;
+}
+
+function formatModuleDescription(module) {
+  let str = '';
+  if (module.capacity) {
+    str += 'Capacity: ' + module.capacity;
+  }
+
+  return (str + ' ' + module.description).trim();
+}
+
+function formatMountDescription(mount) {
+  let str = mount.description;
+  if (mount.deposits && mount.deposits.length) {
+    str += ' [' + mount.deposits.join(', ') + ']';
+  }
+
+  return str;
 }
 </script>
