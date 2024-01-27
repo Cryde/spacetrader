@@ -47,7 +47,7 @@
             </div>
             <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
               <p class="text-sm leading-6 text-white">
-                <button class="btn btn-xs">
+                <button class="btn btn-xs" @click="openNavModal(waypoint.symbol)">
                   Navigate there
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                        stroke="currentColor" class="w-4 h-4">
@@ -135,15 +135,14 @@
                   Buy
                 </button>
               </p>
-              <p class="text-sm leading-5 text-white mt-2">
-
-              </p>
+              <p class="text-sm leading-5 text-white mt-2"></p>
             </div>
           </li>
         </ul>
       </template>
     </Box>
   </div>
+  <navigation-modal ref="navModal" :waypoint-symbol="navWaypointSymbol"/>
 </template>
 <script setup>
 import Box from "../../components/Box.vue";
@@ -152,6 +151,7 @@ import api from '../../api/system';
 import apiShip from '../../api/ship';
 import {formatMoney} from "../../helper/formatter";
 import {emit} from "../../event/emitter";
+import NavigationModal from "../Modal/NavigationModal.vue";
 
 const waypoints = ref(null);
 const systemSymbolRef = ref(null);
@@ -161,6 +161,8 @@ const isLoading = ref(false);
 const isLoadingInfo = ref(false);
 const shipyard = ref(null);
 const isBuying = ref(false);
+const navModal = ref(null);
+const navWaypointSymbol = ref('');
 
 
 onMounted(async () => {
@@ -189,6 +191,11 @@ async function loadShipyardInfo(waypoint) {
   isLoadingInfo.value = true;
   shipyard.value = await api.getShipyard(waypoint.systemSymbol, waypoint.symbol);
   isLoadingInfo.value = false;
+}
+
+function openNavModal(waypointSymbol) {
+  navWaypointSymbol.value = waypointSymbol;
+  navModal.value.$el.showModal();
 }
 
 function hasShipyard(waypoint) {

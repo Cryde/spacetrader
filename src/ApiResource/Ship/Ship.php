@@ -8,6 +8,7 @@ use ApiPlatform\Metadata\Post;
 use App\State\Processor\Ship\PostShipBuyProcessor;
 use App\State\Processor\Ship\PostShipDockProcessor;
 use App\State\Processor\Ship\PostShipExtractProcessor;
+use App\State\Processor\Ship\PostShipNavigateProcessor;
 use App\State\Processor\Ship\PostShipOrbitProcessor;
 use App\State\Provider\Chip\MyShipsProvider;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -40,6 +41,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
     input: BuyShip::class,
     name: 'api_buy_ship',
     processor: PostShipBuyProcessor::class
+)]
+#[Post(
+    uriTemplate: '/ships/navigate',
+    input: ShipNavigate::class,
+    name: 'api_navigate_ship',
+    processor: PostShipNavigateProcessor::class
 )]
 class Ship
 {

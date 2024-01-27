@@ -25,5 +25,9 @@ export default {
   buyShip({shipType, waypointSymbol}) {
     return axios.post(Routing.generate('api_buy_ship'), {shipType, waypointSymbol})
     .then(resp => resp.data)
+  },
+  navigate({shipSymbol, waypointSymbol}) {
+    return axios.post(Routing.generate('api_navigate_ship'), {shipSymbol, waypointSymbol})
+    .then(resp => resp.data)
   }
 }
