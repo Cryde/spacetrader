@@ -63,8 +63,15 @@ services:
     networks:
       spacetrader:
         ipv4_address: 10.20.0.10
-
-
+  
+  redis:
+    image: redis:7.2.4-alpine3.19
+    container_name: spacetrader-redis
+    volumes:
+      - ./volumes/redis/data:/data
+    networks:
+      spacetrader:
+        ipv4_address: 10.20.0.11
 
 ###< doctrine/doctrine-bundle ###
 
