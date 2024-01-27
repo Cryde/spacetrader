@@ -1,9 +1,22 @@
 version: '3'
 
 services:
+  webserver:
+    image: nginx:alpine
+    container_name: webserver-spacetrader
+    working_dir: /var/www
+    volumes:
+        - $PWD:/var/www/
+        - ./volumes/nginx:/etc/nginx/conf.d
+    ports:
+        - "10.20.0.1:80:80"
+    networks:
+        spacetrader:
+            ipv4_address: 10.20.0.2
+
 ###> doctrine/doctrine-bundle ###
   database:
-    image: postgres:${POSTGRES_VERSION:-15}-alpine
+    image: postgres:16.1-alpine3.19
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-app}
       # You should definitely change the password in production
@@ -11,11 +24,50 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-app}
     volumes:
       - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
+    networks:
+        spacetrader:
+            ipv4_address: 10.20.0.3
+
+  php-cli:
+    image: spacetrader-cli:0.1
+    container_name: spacetrader-php-cli
+    working_dir: /var/www/
+    command: /bin/true
+    networks:
+      spacetrader:
+        ipv4_address: 10.20.0.4
+    volumes:
+      - ./volumes/composer-cache:/home/www-data/.composer/cache/:cached
+      - ./volumes/composer-home:/home/www-data/.composer:cached
+      - ./volumes/composer-home-root:/root/.composer:cached
+      - ./volumes/shared:/tmp/shared:cached
+      - $PWD:/var/www
+  
+  php-fpm:
+    image: spacetrader-fpm:0.1
+    container_name: spacetrader-php-fpm
+    working_dir: /var/www/
+    networks:
+      spacetrader:
+        ipv4_address: 10.20.0.5
+    volumes:
+      - ./volumes/php-fpm:/var/log/php:cached
+      - .:/var/www/:cached
+
+
+
 ###< doctrine/doctrine-bundle ###
 
 volumes:
 ###> doctrine/doctrine-bundle ###
   database_data:
 ###< doctrine/doctrine-bundle ###
+
+
+networks:
+  spacetrader:
+    name: spacetrader
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.20.0.0/28
