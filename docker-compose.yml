@@ -18,10 +18,10 @@ services:
   database:
     image: postgres:16.1-alpine3.19
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_DB: ${POSTGRES_DB:-spacetrader}
       # You should definitely change the password in production
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      POSTGRES_USER: ${POSTGRES_USER:-spacetrader}
     volumes:
       - database_data:/var/lib/postgresql/data:rw
     networks:
