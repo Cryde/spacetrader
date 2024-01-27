@@ -8,6 +8,8 @@ use App\ApiResource\Error;
 use App\ApiResource\Extract\Extract;
 use App\ApiResource\Navigation\Navigation;
 use App\ApiResource\Ship\Ship;
+use App\ApiResource\System\Waypoint;
+use App\ApiResource\System\WaypointsResult;
 use App\Service\Cache\CacheFactory;
 use App\Service\Client\SpaceTraderClient;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -115,5 +117,12 @@ readonly class SpaceTraderFacade
     {
         $response = $this->spaceTraderClient->refuel($shipSymbol, $units);
         dump($response->toArray()['data']);
+    }
+
+    public function getWaypointsBySystemSymbol(string $systemSymbol, int $page, ?string $trait = null, ?string $type = null): WaypointsResult
+    {
+        $response = $this->spaceTraderClient->getWaypointsBySystemSymbol($systemSymbol, $page, $trait, $type);
+
+        return $this->denormalizer->denormalize($response->toArray(), WaypointsResult::class);
     }
 }

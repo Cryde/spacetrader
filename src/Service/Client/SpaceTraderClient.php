@@ -12,6 +12,7 @@ class SpaceTraderClient
     final const POST_ACCEPT_CONTRACT_BY_ID = '/v2/my/contracts/%s/accept';
     final const GET_MY_CONTRACTS = '/v2/my/contracts/';
     final const GET_MY_SHIPS = '/v2/my/ships/';
+    final const GET_WAYPOINTS_BY_SYSTEM = '/v2/systems/%s/waypoints';
 
     public function __construct(private readonly HttpClientInterface $spaceTraderClient)
     {
@@ -45,6 +46,21 @@ class SpaceTraderClient
     public function getMyShip(string $symbol): ResponseInterface
     {
         return $this->spaceTraderClient->request('GET', self::GET_MY_SHIPS . $symbol);
+    }
+
+    public function getWaypointsBySystemSymbol(
+        string  $systemSymbol,
+        int $page,
+        ?string $trait = null,
+        ?string $type = null
+    ): ResponseInterface {
+        return $this->spaceTraderClient->request('GET', sprintf(self::GET_WAYPOINTS_BY_SYSTEM, $systemSymbol), [
+            'query' => [
+                'page' => $page,
+                'traits' => $trait,
+                'type' => $type,
+            ],
+        ]);
     }
 
     public function navigate(string $shipSymbol, string $waypointSymbol): ResponseInterface
