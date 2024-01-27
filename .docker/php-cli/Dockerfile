@@ -9,7 +9,8 @@ RUN apk add --update --no-cache --repository=https://dl-cdn.alpinelinux.org/alpi
 RUN mkdir -p /usr/src/php/ext/amqp &&   \
     curl -fsSL https://pecl.php.net/get/amqp | tar xvz -C "/usr/src/php/ext/amqp" --strip 1
 
-
-RUN docker-php-ext-install amqp
+RUN docker-php-ext-install amqp opcache
 
 RUN pecl install igbinary redis && docker-php-ext-enable igbinary redis
+
+ADD 99-custom.ini /usr/local/etc/php/conf.d
