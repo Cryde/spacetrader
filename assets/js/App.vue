@@ -33,11 +33,13 @@
     </div>
 
   </div>
+  <toast/>
 </template>
 <script setup>
 import MyAgent from "./views/MyAgent.vue";
 import MyContracts from "./views/MyContracts.vue";
 import MyChips from "./views/MyChips.vue";
 import WayPoints from "./views/WayPoints/WayPoints.vue";
+import Toast from "./components/Toast.vue";
 
 </script>

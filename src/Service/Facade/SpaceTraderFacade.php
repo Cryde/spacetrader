@@ -7,6 +7,7 @@ use App\ApiResource\Contract\Contract;
 use App\ApiResource\Error;
 use App\ApiResource\Extract\Extract;
 use App\ApiResource\Navigation\Navigation;
+use App\ApiResource\Ship\BuyShip;
 use App\ApiResource\Ship\Ship;
 use App\ApiResource\System\Shipyard;
 use App\ApiResource\System\Waypoint\WaypointsResult;
@@ -89,6 +90,14 @@ readonly class SpaceTraderFacade
     {
         $this->spaceTraderClient->dockShip($identifier);
     }
+
+    public function buyShip(BuyShip $buyShip): Ship
+    {
+        $response = $this->spaceTraderClient->buyShip($buyShip->shipType, $buyShip->waypointSymbol);
+
+        return $this->denormalizer->denormalize($response->toArray()['data']['ship'], Ship::class);
+    }
+
 
     public function orbitShip(string $identifier): void
     {

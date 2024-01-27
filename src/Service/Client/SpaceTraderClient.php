@@ -80,6 +80,16 @@ class SpaceTraderClient
         ]);
     }
 
+    public function buyShip(string $shipType, string $waypointSymbol): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS, [
+            'json' => [
+                'shipType' => $shipType,
+                'waypointSymbol' => $waypointSymbol
+            ]
+        ]);
+    }
+
     public function dockShip(string $identifier): ResponseInterface
     {
         return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/dock');

@@ -5,6 +5,7 @@ namespace App\ApiResource\Ship;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
+use App\State\Processor\Ship\PostShipBuyProcessor;
 use App\State\Processor\Ship\PostShipDockProcessor;
 use App\State\Processor\Ship\PostShipExtractProcessor;
 use App\State\Processor\Ship\PostShipOrbitProcessor;
@@ -33,6 +34,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
     denormalizationContext: ['groups' => self::DOCK],
     name: 'api_ship_extract',
     processor: PostShipExtractProcessor::class
+)]
+#[Post(
+    uriTemplate: '/ships/buy',
+    input: BuyShip::class,
+    name: 'api_buy_ship',
+    processor: PostShipBuyProcessor::class
 )]
 class Ship
 {
