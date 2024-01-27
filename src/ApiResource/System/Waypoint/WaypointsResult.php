@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ApiResource\System;
+namespace App\ApiResource\System\Waypoint;
 
 use App\ApiResource\System\Meta\Meta;
 use Symfony\Component\Serializer\Attribute\SerializedName;

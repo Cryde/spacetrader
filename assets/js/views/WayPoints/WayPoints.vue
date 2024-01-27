@@ -57,7 +57,7 @@
                 </button>
               </p>
               <p class="text-sm leading-5 text-white mt-2">
-                <button class="btn btn-xs mr-2" v-if="hasShipyard(waypoint)">
+                <button class="btn btn-xs mr-2" v-if="hasShipyard(waypoint)" @click="loadShipyardInfo(waypoint)">
                   Shipyard info
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                        stroke="currentColor" class="w-4 h-4">
@@ -83,7 +83,14 @@
   </div>
 
   <div class="basis-2/5">
-    <Box title="Info"></Box>
+    <span class="loading loading-ring loading-md" v-if="isLoadingInfo"></span>
+    <Box title="Shipyard info" v-if="shipyard && !isLoadingInfo">
+      <template #content>
+
+        <h3 class="font">{{ shipyard.symbol }}</h3>
+        {{ shipyard }}
+      </template>
+    </Box>
   </div>
 </template>
 <script setup>
@@ -96,6 +103,8 @@ const systemSymbolRef = ref(null);
 const traitRef = ref(null);
 const typeRef = ref(null);
 const isLoading = ref(false);
+const isLoadingInfo = ref(false);
+const shipyard = ref(null);
 
 
 onMounted(async () => {
@@ -118,6 +127,12 @@ async function onSearch(e) {
 async function loadWaypoint(systemSymbol, filters) {
   const results = await api.getWaypointBySystem(systemSymbol, filters);
   waypoints.value = results['hydra:member'];
+}
+
+async function loadShipyardInfo(waypoint) {
+  isLoadingInfo.value = true;
+  shipyard.value = await api.getShipyard(waypoint.systemSymbol, waypoint.symbol);
+  isLoadingInfo.value = false;
 }
 
 function hasShipyard(waypoint) {

@@ -6,4 +6,8 @@ export default {
     return axios.get(Routing.generate('api_waypoints_collection', {systemSymbol, ...filters}))
     .then(resp => resp.data)
   },
+  getShipyard(systemSymbol, waypointSymbol) {
+    return axios.get(Routing.generate('api_shipyard_get', {systemSymbol, waypointSymbol}))
+    .then(resp => resp.data)
+  }
 }

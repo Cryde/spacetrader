@@ -2,8 +2,10 @@
 
 namespace App\ApiResource\System;
 
-use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\ApiResource\System\Waypoint\Chart;
+use App\ApiResource\System\Waypoint\Faction;
+use App\ApiResource\System\Waypoint\WTrait;
 use App\State\Provider\System\WaypointCollectionProvider;
 
 #[GetCollection(
