@@ -18,7 +18,6 @@ readonly class ContractPostProcessor implements ProcessorInterface
      */
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
     {
-        dump($data);
         return $this->spaceTraderFacade->acceptContact($data->id);
     }
 }

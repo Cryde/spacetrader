@@ -113,19 +113,17 @@ readonly class SpaceTraderFacade
 
     public function sell(string $identifier, string $inventorySymbol, int $quantity): void
     {
-        $response = $this->spaceTraderClient->sell($identifier, $inventorySymbol, $quantity);
+        $this->spaceTraderClient->sell($identifier, $inventorySymbol, $quantity);
     }
 
     public function deliverContract(string $shipSymbol, string $contractId, string $tradeSymbol, int $units)
     {
-        $response = $this->spaceTraderClient->deliverContract($shipSymbol, $contractId, $tradeSymbol, $units);
-        dump($response->toArray()['data']);
+        $this->spaceTraderClient->deliverContract($shipSymbol, $contractId, $tradeSymbol, $units);
     }
 
     public function refuel(string $shipSymbol, int $units)
     {
-        $response = $this->spaceTraderClient->refuel($shipSymbol, $units);
-        dump($response->toArray()['data']);
+        $this->spaceTraderClient->refuel($shipSymbol, $units);
     }
 
     public function getWaypointsBySystemSymbol(
