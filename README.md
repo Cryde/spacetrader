@@ -27,11 +27,11 @@ Install
 
 In folder `.docker/php-cli`
 ```
-docker build -t spacetrader-cli:0.2 .
+docker build -t spacetrader-cli:0.3 .
 ``````
 In Folder `.docker/php-fpm`
 ```
-docker build -t spacetrader-fpm:0.2 .
+docker build -t spacetrader-fpm:0.3 .
 ```
 In file /etc/hosts 
 ```
