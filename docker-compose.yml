@@ -53,6 +53,16 @@ services:
     volumes:
       - ./volumes/php-fpm:/var/log/php:cached
       - .:/var/www/:cached
+  
+  rabbitmq:
+    image: rabbitmq:3.12.12-management-alpine
+    container_name: spacetrader-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: spacetrader
+      RABBITMQ_DEFAULT_PASS: spacetrader
+    networks:
+      spacetrader:
+        ipv4_address: 10.20.0.10
 
 
 
