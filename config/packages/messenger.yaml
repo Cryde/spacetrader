@@ -16,6 +16,8 @@ framework:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
             contract_send_resources:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+            contract_jettison_cargo:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
             failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
 
@@ -26,5 +28,6 @@ framework:
             App\Message\Cargo\CargoQuantityCheck: cargo_quantity_check
             App\Message\Contract\NavigateContract: contract_navigate
             App\Message\Contract\SendResources: contract_send_resources
+            App\Message\Jettison\JettisonContractCargo: contract_jettison_cargo
             # Route your messages to the transports
             # 'App\Message\YourMessage': async

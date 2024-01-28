@@ -5,6 +5,7 @@ namespace App\MessageHandler\Extract;
 use App\ApiResource\Error;
 use App\Contract\ErrorCode;
 use App\Message\Extract\Extract;
+use App\Message\Jettison\JettisonContractCargo;
 use App\Message\Sell\SellCargo;
 use App\Service\Facade\SpaceTraderFacade;
 use Psr\Log\LoggerInterface;
@@ -38,9 +39,16 @@ class ExtractHandler
             sleep(1);
             // 2. we extract
             $extract = $this->spaceTraderFacade->extract($extractMessage->symbol);
-            // 3. if we are full, it's time to sell !
+
+            // todo : implement "strategy" for contract automation (jettison cargo (fast) or sell (slow) for instance)
+            // 3. if we are full !
             if ($extract->cargo->capacity === $extract->cargo->units) {
-                $this->bus->dispatch(new SellCargo($extractMessage->symbol));
+                // A: jettison excess
+                $this->bus->dispatch(new JettisonContractCargo($extractMessage->symbol));
+                /*
+                B: sell excess stuff we have
+                todo : rework this !  this need to be more intelligent. Market now have "good" that they accept */
+                //$this->bus->dispatch(new SellCargo($extractMessage->symbol));
 
                 return;
             }
@@ -58,7 +66,8 @@ class ExtractHandler
             $error = $this->denormalizer->denormalize($errorData, Error::class);
             if ($error->code === ErrorCode::SHIP_CARGO_IS_FULL) {
                 $this->logger->error('Ship cargo is full!');
-                $this->bus->dispatch(new SellCargo($extractMessage->symbol));
+                $this->bus->dispatch(new JettisonContractCargo($extractMessage->symbol));
+                // todo rework this $this->bus->dispatch(new SellCargo($extractMessage->symbol));
 
                 return;
             }

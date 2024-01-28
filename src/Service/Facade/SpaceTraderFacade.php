@@ -108,6 +108,11 @@ readonly class SpaceTraderFacade
         return $this->denormalizer->denormalize($response->toArray()['data'], Extract::class);
     }
 
+    public function jettison(string $identifier, string $inventorySymbol, int $quantity): void
+    {
+        $this->spaceTraderClient->jettison($identifier, $inventorySymbol, $quantity);
+    }
+
     public function sell(string $identifier, string $inventorySymbol, int $quantity): void
     {
         $this->spaceTraderClient->sell($identifier, $inventorySymbol, $quantity);

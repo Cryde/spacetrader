@@ -108,6 +108,16 @@ class SpaceTraderClient
         return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/orbit');
     }
 
+    public function jettison(string $identifier, string $inventorySymbol, int $quantity): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/jettison', [
+            'json' => [
+                "symbol" => $inventorySymbol,
+                "units"  => $quantity,
+            ],
+        ]);
+    }
+
     public function sell(string $identifier, string $inventorySymbol, int $quantity): ResponseInterface
     {
         return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/sell', [
@@ -137,6 +147,7 @@ class SpaceTraderClient
     {
         return $this->spaceTraderClient->request('POST', self::GET_MY_SHIPS . $identifier . '/extract');
     }
+
 
     public function refuel(string $shipSymbol, int $units): ResponseInterface
     {
