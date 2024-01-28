@@ -5,13 +5,10 @@
       <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="Dashboard" checked/>
       <div role="tabpanel" class="tab-content pt-10 pb-10">
         <div class="flex flex-row gap-x-8 gap-y-4">
-          <div class="basis-1/5">
-            <my-agent/>
-          </div>
           <div class="basis-2/5">
             <my-contracts/>
           </div>
-          <div class="basis-2/5">
+          <div class="basis-3/5">
             <my-chips/>
           </div>
         </div>
