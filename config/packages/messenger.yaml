@@ -1,6 +1,6 @@
 framework:
     messenger:
-        failure_transport: failed
+        #failure_transport: failed
 
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
@@ -18,7 +18,7 @@ framework:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
             contract_jettison_cargo:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-            failed: 'doctrine://default?queue_name=failed'
+            #failed: 'doctrine://default?queue_name=failed'
             # sync: 'sync://'
 
         routing:
