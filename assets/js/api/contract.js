@@ -14,5 +14,14 @@ export default {
       }
     })
     .then(resp => resp.data)
+  },
+  fulfillContract(id) {
+    return axios.post(Routing.generate('api_fulfill_contract'), {contractId: id}, {
+      headers: {
+        'Content-Type': 'application/ld+json',
+        'Accept': 'application/ld+json',
+      }
+    })
+    .then(resp => resp.data)
   }
 }

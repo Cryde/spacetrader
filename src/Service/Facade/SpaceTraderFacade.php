@@ -49,6 +49,14 @@ readonly class SpaceTraderFacade
         return $this->denormalizer->denormalize($response->toArray()['data']['contract'], Contract::class);
     }
 
+    public function fulfillContract(string $id): Contract
+    {
+        $response = $this->spaceTraderClient->fulfillContract($id);
+        $this->cache->invalidateTags([CacheFactory::TAG_MY_CONTRACTS]);
+
+        return $this->denormalizer->denormalize($response->toArray()['data']['contract'], Contract::class);
+    }
+
     /**
      * @return Contract[]
      */

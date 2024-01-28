@@ -10,6 +10,7 @@ class SpaceTraderClient
     final const GET_MY_AGENT = '/v2/my/agent';
     final const GET_MY_CONTRACT_BY_ID = '/v2/my/contracts/';
     final const POST_ACCEPT_CONTRACT_BY_ID = '/v2/my/contracts/%s/accept';
+    final const POST_FULFILL_CONTRACT_BY_ID = '/v2/my/contracts/%s/fulfill';
     final const GET_MY_CONTRACTS = '/v2/my/contracts/';
     final const GET_MY_SHIPS = '/v2/my/ships/';
     final const GET_WAYPOINTS_BY_SYSTEM = '/v2/systems/%s/waypoints';
@@ -33,6 +34,11 @@ class SpaceTraderClient
     public function acceptContract(string $id): ResponseInterface
     {
         return $this->spaceTraderClient->request('POST', sprintf(self::POST_ACCEPT_CONTRACT_BY_ID, $id));
+    }
+
+    public function fulfillContract(string $id): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', sprintf(self::POST_FULFILL_CONTRACT_BY_ID, $id));
     }
 
     public function getContracts(): ResponseInterface

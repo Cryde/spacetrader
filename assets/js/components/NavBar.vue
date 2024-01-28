@@ -87,4 +87,8 @@ on('ship_bought', async () => {
   myAgent.value = await apiAgent.getMyAgent();
 });
 
+on('fulfill_contract', async () => {
+  myAgent.value = await apiAgent.getMyAgent();
+});
+
 </script>

@@ -13,6 +13,16 @@
           </button>
         </div>
 
+        <div class="text-right mb-2" v-if="!contract.fulfilled">
+          <button
+              @click="fulfillContract(contract.id)"
+              type="button"
+              :disabled="isLoading"
+              class="mt-1 ml-2 px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Complete this contract
+          </button>
+        </div>
+
         <strong>ID</strong> : {{ contract.id }}  - <strong>Type</strong> : {{ contract.type }}<br/>
         <strong>Accepted</strong> : {{ contract.accepted ? 'Yes' : 'No' }}  - <strong>Completed</strong> : {{ contract.fulfilled ? 'Yes' : 'No' }}<br/>
         <strong>Expiration</strong> : {{ contract.expiration }} <br/>
@@ -54,6 +64,7 @@ import Box from "../components/Box.vue";
 
 import api from '../api/contract';
 import {formatPercent} from "../helper/formatter";
+import {emit} from "../event/emitter";
 
 let contracts = ref([]);
 let isLoading = ref(true);
@@ -76,6 +87,12 @@ async function getContracts() {
 
 async function acceptContract(id) {
   await api.acceptContract(id);
+  await reload();
+}
+
+async function fulfillContract(id) {
+  await api.fulfillContract(id);
+  emit('fulfill_contract');
   await reload();
 }
 
