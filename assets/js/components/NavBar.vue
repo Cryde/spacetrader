@@ -14,7 +14,7 @@
             </span>
             <span class="mr-3">
               <library-icon class="w-4 h-4 inline-block align-sub text-white mr-1"/>
-              <span class="text-sm">{{ myAgent.headquarters }}</span>
+              <span class="text-sm select-all">{{ myAgent.headquarters }}</span>
             </span>
             <span class="mr-3">
               <dollar-icon class="w-4 h-4 inline-block align-sub text-white mr-1"/>
