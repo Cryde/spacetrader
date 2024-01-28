@@ -6,7 +6,7 @@ function on(eventName, callback) {
   emitter.on(eventName, callback);
 }
 
-function emit(eventName, data) {
+function emit(eventName, data = {}) {
   emitter.emit(eventName, data);
 }
 

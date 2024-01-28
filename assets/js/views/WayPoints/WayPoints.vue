@@ -250,5 +250,6 @@ async function buyShip(waypointSymbol, ship) {
   const result = await apiShip.buyShip({shipType: ship.type, waypointSymbol});
   isBuying.value = false;
   emit('toast', {type: 'success', message: 'Congrats! Ship has been buy !'})
+  emit('ship_bought')
 }
 </script>

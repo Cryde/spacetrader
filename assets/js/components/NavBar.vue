@@ -57,6 +57,7 @@ import GroupIcon from "./Icons/GroupIcon.vue";
 import LibraryIcon from "./Icons/LibraryIcon.vue";
 import apiAgent from '../api/agent';
 import {formatMoney} from "../helper/formatter";
+import {on} from "../event/emitter";
 
 let myAgent = ref({});
 
@@ -81,5 +82,9 @@ function onModeChange(e) {
 onMounted(async () => {
   myAgent.value = await apiAgent.getMyAgent();
 })
+
+on('ship_bought', async () => {
+  myAgent.value = await apiAgent.getMyAgent();
+});
 
 </script>

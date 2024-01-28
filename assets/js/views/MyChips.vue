@@ -81,6 +81,7 @@
 import Box from "../components/Box.vue";
 import api from "../api/ship";
 import {onMounted, ref} from "vue";
+import {on} from "../event/emitter";
 
 let ships = ref([]);
 
@@ -95,6 +96,10 @@ async function reload() {
 async function getShips() {
   return (await api.getMyShips())['hydra:member'];
 }
+
+on('ship_bought', async () => {
+  reload();
+});
 
 async function dockShip(symbol) {
   await api.dockShip({symbol});
