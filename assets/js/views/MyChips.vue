@@ -42,9 +42,10 @@
           <div class="flex justify-between mb-1">
             <span class="text-base font-medium text-blue-700 dark:text-white">Capacity</span>
             <span
-                class="text-sm font-medium text-blue-700 dark:text-white">{{
-                getPercentFull(ship.cargo.capacity, ship.cargo.units)
-              }}%</span>
+                class="text-sm font-medium text-blue-700 dark:text-white">
+              {{
+                formatPercent(getPercentFull(ship.cargo.capacity, ship.cargo.units))
+              }}</span>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
             <div class="bg-blue-600 h-2.5 rounded-full"
@@ -82,6 +83,7 @@ import Box from "../components/Box.vue";
 import api from "../api/ship";
 import {onMounted, ref} from "vue";
 import {on} from "../event/emitter";
+import {formatPercent} from "../helper/formatter";
 
 let ships = ref([]);
 

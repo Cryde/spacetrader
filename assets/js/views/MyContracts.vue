@@ -34,9 +34,10 @@
           <div class="flex justify-between mb-1">
             <span class="text-base font-medium text-blue-700 dark:text-white">Progression</span>
             <span
-                class="text-sm font-medium text-blue-700 dark:text-white">{{
-                getPercentFull(deliver.unitsRequired, deliver.unitsFulfilled)
-              }}%</span>
+                class="text-sm font-medium text-blue-700 dark:text-white">
+              {{
+                formatPercent(getPercentFull(deliver.unitsRequired, deliver.unitsFulfilled))
+              }}</span>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
             <div class="bg-blue-600 h-2.5 rounded-full"
@@ -52,6 +53,7 @@ import {onMounted, ref} from "vue";
 import Box from "../components/Box.vue";
 
 import api from '../api/contract';
+import {formatPercent} from "../helper/formatter";
 
 let contracts = ref([]);
 let isLoading = ref(true);
