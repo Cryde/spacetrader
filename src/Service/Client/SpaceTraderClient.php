@@ -14,6 +14,7 @@ class SpaceTraderClient
     final const GET_MY_SHIPS = '/v2/my/ships/';
     final const GET_WAYPOINTS_BY_SYSTEM = '/v2/systems/%s/waypoints';
     final const GET_SHIPYARD_BY_SYSTEM_AND_WAYPOINT = '/v2/systems/%s/waypoints/%s/shipyard';
+    final const GET_MARKET_BY_SYSTEM_AND_WAYPOINT = '/v2/systems/%s/waypoints/%s/market';
 
     public function __construct(private readonly HttpClientInterface $spaceTraderClient)
     {
@@ -68,6 +69,13 @@ class SpaceTraderClient
         return $this->spaceTraderClient->request(
             'GET',
             sprintf(self::GET_SHIPYARD_BY_SYSTEM_AND_WAYPOINT, $systemSymbol, $waypointSymbol)
+        );
+    }
+
+    public function getMarket(string $systemSymbol, string $waypointSymbol): ResponseInterface {
+        return $this->spaceTraderClient->request(
+            'GET',
+            sprintf(self::GET_MARKET_BY_SYSTEM_AND_WAYPOINT, $systemSymbol, $waypointSymbol)
         );
     }
 

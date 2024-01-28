@@ -9,6 +9,7 @@ use App\ApiResource\Extract\Extract;
 use App\ApiResource\Navigation\Navigation;
 use App\ApiResource\Ship\BuyShip;
 use App\ApiResource\Ship\Ship;
+use App\ApiResource\System\Market;
 use App\ApiResource\System\Shipyard;
 use App\ApiResource\System\Waypoint\WaypointsResult;
 use App\Service\Cache\CacheFactory;
@@ -138,5 +139,12 @@ readonly class SpaceTraderFacade
         $response = $this->spaceTraderClient->getShipyard($systemSymbol, $waypointSymbol);
 
         return $this->denormalizer->denormalize($response->toArray()['data'], Shipyard::class);
+    }
+
+    public function getMarket(string $systemSymbol, string $waypointSymbol): Market
+    {
+        $response = $this->spaceTraderClient->getMarket($systemSymbol, $waypointSymbol);
+
+        return $this->denormalizer->denormalize($response->toArray()['data'], Market::class);
     }
 }

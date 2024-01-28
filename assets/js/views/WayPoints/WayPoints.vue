@@ -66,7 +66,7 @@
                   </svg>
                 </button>
 
-                <button class="btn btn-xs" v-if="hasMarket(waypoint)">
+                <button class="btn btn-xs" v-if="hasMarket(waypoint)" @click="loadMarketInfo(waypoint)">
                   Market info
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                        stroke="currentColor" class="w-4 h-4">
@@ -141,6 +141,15 @@
         </ul>
       </template>
     </Box>
+    <Box title="Market info" v-if="market && !isLoadingInfo">
+      <template #content>
+        <h3 class="font">{{ market.symbol }}</h3>
+        {{ market }}
+
+      
+      </template>
+
+    </Box>
   </div>
   <navigation-modal ref="navModal" :waypoint-symbol="navWaypointSymbol"/>
 </template>
@@ -160,6 +169,7 @@ const typeRef = ref(null);
 const isLoading = ref(false);
 const isLoadingInfo = ref(false);
 const shipyard = ref(null);
+const market = ref(null);
 const isBuying = ref(false);
 const navModal = ref(null);
 const navWaypointSymbol = ref('');
@@ -183,15 +193,26 @@ async function onSearch(e) {
 }
 
 async function loadWaypoint(systemSymbol, filters) {
+  shipyard.value = null
+  market.value = null
   const results = await api.getWaypointBySystem(systemSymbol, filters);
   waypoints.value = results['hydra:member'];
 }
 
 async function loadShipyardInfo(waypoint) {
+  market.value = null;
   isLoadingInfo.value = true;
   shipyard.value = await api.getShipyard(waypoint.systemSymbol, waypoint.symbol);
   isLoadingInfo.value = false;
 }
+
+async function loadMarketInfo(waypoint) {
+  shipyard.value = null
+  isLoadingInfo.value = true;
+  market.value = await api.getMarket(waypoint.systemSymbol, waypoint.symbol);
+  isLoadingInfo.value = false;
+}
+
 
 function openNavModal(waypointSymbol) {
   navWaypointSymbol.value = waypointSymbol;
