@@ -13,7 +13,7 @@
           </button>
         </div>
 
-        <div class="text-right mb-2" v-if="!contract.fulfilled">
+        <div class="text-right mb-2" v-if="!isFulfill(contract)">
           <button
               @click="fulfillContract(contract.id)"
               type="button"
@@ -23,8 +23,9 @@
           </button>
         </div>
 
-        <strong>ID</strong> : {{ contract.id }}  - <strong>Type</strong> : {{ contract.type }}<br/>
-        <strong>Accepted</strong> : {{ contract.accepted ? 'Yes' : 'No' }}  - <strong>Completed</strong> : {{ contract.fulfilled ? 'Yes' : 'No' }}<br/>
+        <strong>ID</strong> : {{ contract.id }} - <strong>Type</strong> : {{ contract.type }}<br/>
+        <strong>Accepted</strong> : {{ contract.accepted ? 'Yes' : 'No' }} - <strong>Completed</strong> :
+        {{ contract.fulfilled ? 'Yes' : 'No' }}<br/>
         <strong>Expiration</strong> : {{ contract.expiration }} <br/>
 
         <hr class="h-px my-3 bg-gray-200 border-0 dark:bg-gray-700">
@@ -36,7 +37,7 @@
         <hr class="h-px my-3 bg-gray-200 border-0 dark:bg-gray-700">
 
         <div v-for="(deliver, key) in contract.terms.deliver">
-          Deliver n°{{key+1}}<br/>
+          Deliver n°{{ key + 1 }}<br/>
           <strong>Trade symbol</strong> : {{ deliver.tradeSymbol }}<br/>
           <strong>Destination symbol</strong> : {{ deliver.destinationSymbol }}<br/>
           <strong>Unit required</strong> : {{ deliver.unitsRequired }}<br/>
@@ -94,6 +95,17 @@ async function fulfillContract(id) {
   await api.fulfillContract(id);
   emit('fulfill_contract');
   await reload();
+}
+
+function isFulfill(contract) {
+
+  for (const deliver of contract.terms.deliver) {
+    if (deliver.unitsRequired !== deliver.unitsFulfilled) {
+      return false;
+    }
+  }
+
+  return contract.fulfilled;
 }
 
 function getPercentFull(total, current) {
