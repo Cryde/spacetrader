@@ -1,11 +1,10 @@
 <template>
-  <div class="navbar bg-base-100">
+  <div class="navbar bg-neutral z-50 fixed top-0">
     <div class="container mx-auto">
       <div class="navbar-start">
         <a class="btn btn-ghost text-xl">SpaceTrader</a>
       </div>
       <div class="navbar-end">
-
         <div class="flex justify-end">
           <div>
             <span class="mr-3">
