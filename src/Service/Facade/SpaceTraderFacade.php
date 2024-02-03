@@ -2,7 +2,7 @@
 
 namespace App\Service\Facade;
 
-use App\ApiResource\Agent;
+use App\ApiResource\Agent\Agent;
 use App\ApiResource\Contract\Contract;
 use App\ApiResource\Error;
 use App\ApiResource\Extract\Extract;
