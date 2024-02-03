@@ -12,12 +12,12 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 
 #[AsMessageHandler]
-class SellCargoHandler
+readonly class SellCargoHandler
 {
     public function __construct(
-        private readonly SpaceTraderFacade $spaceTraderFacade,
-        private readonly ContractsGoodsProvider $contractsGoodsProvider,
-        private readonly MessageBusInterface $bus
+        private SpaceTraderFacade      $spaceTraderFacade,
+        private ContractsGoodsProvider $contractsGoodsProvider,
+        private MessageBusInterface    $bus
     ) {
     }
 
@@ -27,15 +27,15 @@ class SellCargoHandler
         $excludedFromSells = $this->contractsGoodsProvider->getContractsGoods();
 
         // 2. get the current cargo from this ship
-        $ship = $this->spaceTraderFacade->getShip($sellCargoMessage->getSymbol());
+        $ship = $this->spaceTraderFacade->getShip($sellCargoMessage->symbol);
         sleep(1);
-        $this->spaceTraderFacade->dockShip($sellCargoMessage->getSymbol());
+        $this->spaceTraderFacade->dockShip($sellCargoMessage->symbol);
         sleep(1);
         foreach ($ship->cargo->inventory as $inventory) {
             // 3. don't sell good we need in contracts !
             if (!in_array($inventory->symbol, $excludedFromSells)) {
                 $this->bus->dispatch(new Sell(
-                    $sellCargoMessage->getSymbol(),
+                    $sellCargoMessage->symbol,
                     $inventory->symbol,
                     $inventory->units
                 ));
@@ -44,7 +44,7 @@ class SellCargoHandler
         }
 
         // Wait 10 sec then check if cargo has enough place to re-extract
-        $this->bus->dispatch(new CargoQuantityCheck($sellCargoMessage->getSymbol()), [
+        $this->bus->dispatch(new CargoQuantityCheck($sellCargoMessage->symbol), [
             new DelayStamp(1000 * 10)
         ]);
     }

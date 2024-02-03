@@ -10,18 +10,18 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
 #[AsMessageHandler]
-class SellHandler
+readonly class SellHandler
 {
     public function __construct(
-        private readonly SpaceTraderFacade     $spaceTraderFacade,
-        private readonly DenormalizerInterface $denormalizer
+        private SpaceTraderFacade     $spaceTraderFacade,
+        private DenormalizerInterface $denormalizer
     ) {
     }
 
     public function __invoke(Sell $sellMessage): void
     {
         try {
-            $this->spaceTraderFacade->sell($sellMessage->getShipSymbol(), $sellMessage->getUnitSymbol(), $sellMessage->getUnitQuantity());
+            $this->spaceTraderFacade->sell($sellMessage->shipSymbol, $sellMessage->unitSymbol, $sellMessage->unitQuantity);
         } catch (HttpExceptionInterface $e) {
             $errorData = $e->getResponse()->toArray(false)['error'] ?? null;
             if ($errorData === null) {

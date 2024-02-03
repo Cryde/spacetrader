@@ -15,13 +15,13 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
 #[AsMessageHandler]
-class NavigateContractHandler
+readonly class NavigateContractHandler
 {
     public function __construct(
-        private readonly SpaceTraderFacade     $spaceTraderFacade,
-        private readonly MessageBusInterface   $bus,
-        private readonly DenormalizerInterface $denormalizer,
-        private readonly LoggerInterface $logger
+        private SpaceTraderFacade     $spaceTraderFacade,
+        private MessageBusInterface   $bus,
+        private DenormalizerInterface $denormalizer,
+        private LoggerInterface       $logger
     ) {
     }
 

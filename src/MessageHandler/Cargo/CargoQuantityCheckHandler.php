@@ -10,11 +10,11 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsMessageHandler]
-class CargoQuantityCheckHandler
+readonly class CargoQuantityCheckHandler
 {
     public function __construct(
-        private readonly SpaceTraderFacade   $spaceTraderFacade,
-        private readonly MessageBusInterface $bus
+        private SpaceTraderFacade   $spaceTraderFacade,
+        private MessageBusInterface $bus
     ) {
     }
 

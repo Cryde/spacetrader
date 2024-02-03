@@ -17,14 +17,14 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
 #[AsMessageHandler]
-class SendResourcesHandler
+readonly class SendResourcesHandler
 {
     public function __construct(
-        private readonly SpaceTraderFacade     $spaceTraderFacade,
-        private readonly MessageBusInterface   $bus,
-        private readonly DenormalizerInterface $denormalizer,
-        private readonly TagAwareCacheInterface $cache,
-        private readonly LoggerInterface $logger
+        private SpaceTraderFacade      $spaceTraderFacade,
+        private MessageBusInterface    $bus,
+        private DenormalizerInterface  $denormalizer,
+        private TagAwareCacheInterface $cache,
+        private LoggerInterface        $logger
     ) {
     }
 
