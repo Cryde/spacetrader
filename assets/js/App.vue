@@ -9,7 +9,7 @@
     </template>
     <template v-else>
       <nav-bar/>
-      <div class="container mx-auto pt-6">
+      <div class="container mx-auto pt-6 pb-6">
         <summary-agent/>
         <router-view></router-view>
       </div>

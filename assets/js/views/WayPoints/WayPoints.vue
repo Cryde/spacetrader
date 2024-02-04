@@ -19,9 +19,7 @@
             <select class="select select-bordered join-item" ref="typeRef">
               <option disabled selected value="">Type</option>
               <option value="">---</option>
-              <option value="ENGINEERED_ASTEROID">Engineered Asteroid</option>
-              <option value="ASTEROID">Asteroid</option>
-              <option value="ORBITAL_STATION">Orbital Station</option>
+              <option v-for="type in getWaypointTypes()" :value="type.key">{{type.label}}</option>
             </select>
             <div class="indicator">
               <button class="btn join-item" @click="onSearch">Search</button>
@@ -160,6 +158,7 @@ import apiShip from '../../api/ship';
 import {formatMoney} from "../../helper/formatter";
 import {emit} from "../../event/emitter";
 import NavigationModal from "../Modal/NavigationModal.vue";
+import {getWaypointTypes} from "../../helper/value-list";
 
 const waypoints = ref(null);
 const systemSymbolRef = ref(null);
