@@ -34,6 +34,20 @@ readonly class SpaceTraderFacade
         return $this->denormalizer->denormalize($response->toArray()['data'], Agent::class);
     }
 
+    public function getAgentWithAuthToken(string $token): Agent
+    {
+        $response = $this->spaceTraderClient->getAgentWithAuthToken($token);
+
+        return $this->denormalizer->denormalize($response->toArray()['data'], Agent::class);
+    }
+
+    public function register(string $symbol, string $faction): string
+    {
+        $response = $this->spaceTraderClient->register($symbol, $faction);
+
+        return $response->toArray()['data']['token'];
+    }
+
     public function getContract(string $id): Contract
     {
         $response = $this->spaceTraderClient->getContract($id);

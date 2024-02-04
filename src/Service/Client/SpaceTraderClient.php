@@ -8,6 +8,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class SpaceTraderClient
 {
     final const GET_MY_AGENT = '/v2/my/agent';
+    final const POST_REGISTER = '/v2/register';
     final const GET_MY_CONTRACT_BY_ID = '/v2/my/contracts/';
     final const POST_ACCEPT_CONTRACT_BY_ID = '/v2/my/contracts/%s/accept';
     final const POST_FULFILL_CONTRACT_BY_ID = '/v2/my/contracts/%s/fulfill';
@@ -21,9 +22,26 @@ class SpaceTraderClient
     {
     }
 
+    public function getAgentWithAuthToken(string $token): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('GET', self::GET_MY_AGENT, [
+            'auth_bearer' => $token
+        ]);
+    }
+
     public function getAgent(): ResponseInterface
     {
         return $this->spaceTraderClient->request('GET', self::GET_MY_AGENT);
+    }
+
+    public function register(string $symbol, string $faction): ResponseInterface
+    {
+        return $this->spaceTraderClient->request('POST', self::POST_REGISTER, [
+            'json' => [
+                'symbol' => $symbol,
+                'faction' => $faction,
+            ],
+        ]);
     }
 
     public function getContract(string $id): ResponseInterface

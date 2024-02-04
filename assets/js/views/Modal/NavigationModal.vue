@@ -63,7 +63,6 @@ async function getShips() {
 }
 
 async function navigate() {
-  console.log(selectWaypointSymbol.value)
   await api.navigate({
     shipSymbol: selectedShip.value,
     waypointSymbol: props.waypointSymbol

@@ -7,3 +7,6 @@ api_platform:
     keep_legacy_inflector: false
     exception_to_status:
         App\Exception\LimitExtractionException: 409
+        App\Exception\Register\FailedTokenParseException: 422
+        App\Exception\Register\TooOldTokenException: 422
+        App\Exception\Register\UsernameNotAvailableException: 422
