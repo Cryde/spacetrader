@@ -68,21 +68,6 @@ Run the migrations
 docker compose run --rm php-musicall bin/console doctrine:migration:migrate
 ```
 
-Register to the game API
-```
-curl --request POST \
- --url 'https://api.spacetraders.io/v2/register' \
- --header 'Content-Type: application/json' \
- --data '{
-    "symbol": "INSERT_CALLSIGN_HERE",
-    "faction": "COSMIC"
-   }'
-   
-```
-
-Copy the token in your .env.local file at `TOKEN_API`
-
-
 Go to `http://spacetrader.local` and enjoy !
 
 ### Todo 
