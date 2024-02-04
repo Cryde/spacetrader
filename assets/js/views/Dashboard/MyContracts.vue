@@ -61,11 +61,11 @@
 </template>
 <script setup>
 import {onMounted, ref} from "vue";
-import Box from "../components/Box.vue";
+import Box from "../../components/Box.vue";
 
-import api from '../api/contract';
-import {formatPercent} from "../helper/formatter";
-import {emit} from "../event/emitter";
+import api from '../../api/contract';
+import {formatPercent} from "../../helper/formatter";
+import {emit} from "../../event/emitter";
 
 let contracts = ref([]);
 let isLoading = ref(true);

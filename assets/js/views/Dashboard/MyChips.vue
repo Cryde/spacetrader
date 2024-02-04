@@ -79,11 +79,11 @@
   </Box>
 </template>
 <script setup>
-import Box from "../components/Box.vue";
-import api from "../api/ship";
+import Box from "../../components/Box.vue";
+import api from "../../api/ship";
 import {onMounted, ref} from "vue";
-import {on} from "../event/emitter";
-import {formatPercent} from "../helper/formatter";
+import {on} from "../../event/emitter";
+import {formatPercent} from "../../helper/formatter";
 
 let ships = ref([]);
 

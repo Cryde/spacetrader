@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.bg-navbar-active {
+    background-color: var(--fallback-bc,oklch(var(--bc)/0.1));
+}
