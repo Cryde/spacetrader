@@ -20,11 +20,16 @@
                 Waypoints
               </router-link>
             </li>
+            <li>
+              <router-link :to="{ name: 'settings'}" exact-active-class="bg-navbar-active">
+                Settings
+              </router-link>
+            </li>
+            <li><a @click="logout">Logout</a></li>
           </ul>
         </div>
-        <a class="btn btn-ghost text-xl">
-          <rocket-icon class="w-4 h-4"/>
-          SpaceTrader
+        <a class="btn hidden sm:inline-flex sm:ml-2 lg:ml-0 text-xl">
+          <rocket-icon class="w-4 h-4 inline"/> SpaceTrader
         </a>
       </div>
 
@@ -41,89 +46,40 @@
             </router-link>
           </li>
           <li class="px-1 disabled"><a>Navigation</a></li>
-          <li class="px-1 disabled"><a>Settings</a></li>
+          <li class="px-1 disabled"><a>Contracts</a></li>
         </ul>
       </div>
 
-      <div class="navbar-end">
-        <div class="flex justify-end">
-          <div class="loading loading-ring loading-sm" v-if="isAgentLoading"></div>
-          <div v-else class="hidden md:block">
-              <span class="mr-3 hidden sm:inline-block">
-                <user-alone-icon class="w-4 h-4 inline-block align-sub text-white mr-1"/>
-                <span class="text-sm select-all">{{ myAgent.symbol }}</span>
-              </span>
-            <span class="mr-3">
-                <library-icon class="w-4 h-4 inline-block align-sub text-white mr-1"/>
-                <span class="text-sm select-all">{{ myAgent.headquarters }}</span>
-              </span>
-            <span class="mr-3">
-                <dollar-icon class="w-4 h-4 inline-block align-sub text-white mr-1"/>
-                <span class="text-sm">{{ formatMoney(myAgent.credits) }}</span>
-              </span>
-            <span class="mr-3 hidden sm:inline-block">
-                <group-icon class="w-4 h-4 inline-block align-sub text-white mr-1"/>
-                <span class="text-sm select-all">{{ myAgent.startingFaction }}</span>
-              </span>
+      <div class="navbar-end hidden lg:flex">
+        <div class="dropdown dropdown-end">
+          <div tabindex="0" role="button" class="btn btn-ghost">
+            <div class="w-10">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                   class="inline-block w-5 h-5 stroke-current">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>
+              </svg>
+            </div>
           </div>
-          <div class="ml-2 sm:ml-20 mr-2">
-            <label class="swap swap-rotate">
-              <!-- this hidden checkbox controls the state -->
-              <input type="checkbox" class="theme-controller" value="dark" @change="onModeChange"/>
-              <sun-icon class="w-4 h-4 swap-on fill-current"/>
-              <moon-icon class="w-4 h-4 swap-off fill-current"/>
-            </label>
-          </div>
+          <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
+            <li>
+              <router-link :to="{ name: 'settings'}" exact-active-class="bg-navbar-active">
+                Settings
+              </router-link>
+            </li>
+            <li><a @click="logout">Logout</a></li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import {onMounted, ref} from "vue";
-import UserAloneIcon from "./Icons/UserAloneIcon.vue";
-import DollarIcon from "./Icons/DollarIcon.vue";
-import GroupIcon from "./Icons/GroupIcon.vue";
-import LibraryIcon from "./Icons/LibraryIcon.vue";
-import apiAgent from '../api/agent';
-import {formatMoney} from "../helper/formatter";
-import {on} from "../event/emitter";
 import RocketIcon from "./Icons/RocketIcon.vue";
-import SunIcon from "./Icons/SunIcon.vue";
-import MoonIcon from "./Icons/MoonIcon.vue";
+import {emit} from "../event/emitter";
 
-let myAgent = ref({});
-let isAgentLoading = ref(true);
-
-if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-  document.documentElement.classList.add('dark')
-} else {
-  document.documentElement.classList.remove('dark')
+function logout() {
+  emit('logout');
 }
-
-function onModeChange(e) {
-  if (localStorage.theme === 'dark') {
-    localStorage.theme = 'light'
-    document.documentElement.classList.remove('dark')
-  } else {
-    localStorage.theme = 'dark';
-    document.documentElement.classList.add('dark')
-  }
-}
-
-
-onMounted(async () => {
-  isAgentLoading.value = true;
-  myAgent.value = await apiAgent.getMyAgent();
-  isAgentLoading.value = false;
-})
-
-on('ship_bought', async () => {
-  myAgent.value = await apiAgent.getMyAgent();
-});
-
-on('fulfill_contract', async () => {
-  myAgent.value = await apiAgent.getMyAgent();
-});
 
 </script>

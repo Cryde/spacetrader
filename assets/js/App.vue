@@ -10,6 +10,7 @@
     <template v-else>
       <nav-bar/>
       <div class="container mx-auto pt-6">
+        <summary-agent/>
         <router-view></router-view>
       </div>
     </template>
@@ -17,9 +18,6 @@
   <toast/>
 </template>
 <script setup>
-import MyContracts from "./views/Dashboard/MyContracts.vue";
-import MyChips from "./views/Dashboard/MyChips.vue";
-import WayPoints from "./views/WayPoints/WayPoints.vue";
 import Toast from "./components/Toast.vue";
 import NavBar from "./components/NavBar.vue";
 import {onMounted, ref} from "vue";
@@ -27,27 +25,37 @@ import userApi from "./api/user";
 import SecurityEntry from "./views/Security/SecurityEntry.vue";
 import axios from "axios";
 import {on} from "./event/emitter";
+import SummaryAgent from "./views/Agent/SummaryAgent.vue";
 
 const hasAppAccess = ref(false);
 const hasAppAccessLoading = ref(true);
 
+if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  document.documentElement.classList.add('dark')
+} else {
+  document.documentElement.classList.remove('dark')
+}
+
 onMounted(async () => {
   await checkIsAuth();
 
+  on('logout', () => {
+    localStorage.removeItem("token");
+    checkIsAuth();
+  });
   on('login_success', checkIsAuth);
   on('register_success', checkIsAuth);
 });
 
 
 async function checkIsAuth() {
-  const token = localStorage.getItem("token");
-  if (token) {
-    axios.interceptors.request.use(function (config) {
+  axios.interceptors.request.use(function (config) {
+    const token = getToken();
+    if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-
-      return config;
-    });
-  }
+    }
+    return config;
+  });
 
   try {
     hasAppAccessLoading.value = true;
@@ -62,5 +70,8 @@ async function checkIsAuth() {
   hasAppAccessLoading.value = false;
 }
 
+function getToken() {
+  return localStorage.getItem("token");
+}
 
 </script>
