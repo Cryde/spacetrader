@@ -46,6 +46,7 @@
             </router-link>
           </li>
           <li class="px-1 disabled"><a>Navigation</a></li>
+          <li class="px-1 disabled"><a>Ships</a></li>
           <li class="px-1 disabled"><a>Contracts</a></li>
         </ul>
       </div>
