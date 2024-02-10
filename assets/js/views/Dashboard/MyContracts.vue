@@ -1,13 +1,13 @@
 <template>
   <Box title="My Contracts" title-button-content="Refresh" @click-title-button="reload">
     <template #content>
-      <div v-for="contract in contracts">
+      <div v-for="contract in contractStore.contracts">
 
         <div v-if="!contract.accepted" class="text-right mb-2">
           <button
-              @click="acceptContract(contract.id)"
+              @click="contractStore.acceptContract(contract.id)"
               type="button"
-              :disabled="isLoading"
+              :disabled="contractStore.isContractLoading"
               class="mt-1 ml-2 px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             Accept this contract
           </button>
@@ -15,9 +15,9 @@
 
         <div class="text-right mb-2" v-if="!isFulfill(contract)">
           <button
-              @click="fulfillContract(contract.id)"
+              @click="contractStore.fulfillContract(contract.id)"
               type="button"
-              :disabled="isLoading"
+              :disabled="contractStore.isContractLoading"
               class="mt-1 ml-2 px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
             Complete this contract
           </button>
@@ -60,42 +60,17 @@
   </Box>
 </template>
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted} from "vue";
 import Box from "../../components/Box.vue";
 
-import api from '../../api/contract';
+import {useContractsStore} from "../../store/contract/contract";
 import {formatPercent} from "../../helper/formatter";
-import {emit} from "../../event/emitter";
 
-let contracts = ref([]);
-let isLoading = ref(true);
+const contractStore = useContractsStore()
 
 onMounted(async () => {
-  isLoading.value = true;
-  contracts.value = await getContracts()
-  isLoading.value = false;
+  await contractStore.loadContracts();
 })
-
-async function reload() {
-  isLoading.value = true;
-  contracts.value = await getContracts()
-  isLoading.value = false;
-}
-
-async function getContracts() {
-  return (await api.getMyContracts())['hydra:member'];
-}
-
-async function acceptContract(id) {
-  await api.acceptContract(id);
-  await reload();
-}
-
-async function fulfillContract(id) {
-  await api.fulfillContract(id);
-  emit('fulfill_contract');
-  await reload();
-}
 
 function isFulfill(contract) {
 
