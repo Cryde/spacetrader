@@ -143,7 +143,64 @@
       <Box title="Market info" v-if="market && !isLoadingInfo">
         <template #content>
           <h3 class="font">{{ market.symbol }}</h3>
-          {{ market }}
+
+          <ul role="list" class="divide-y divide-gray-700">
+            <li class="flex justify-between gap-x-6 py-5" v-if="market.exports.length">
+              <div class="flex min-w-0 gap-x-4">
+                <div class="min-w-0 flex-auto">
+                  <p class="text-sm font-semibold text-white">Exports</p>
+                  <div class="mt-1 text-xs leading-5 text-gray-300">
+                    Exports are goods produced at the waypoint, and typically have a lower purchase price than import goods.<br/>
+
+                    <div class="tooltip" :data-tip="exp.description" v-for="exp in market.exports">
+                      <span class="badge badge-primary mr-1 mb-1">{{ exp.symbol }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                <p class="text-sm leading-6 text-white"></p>
+                <p class="text-sm leading-5 text-white mt-2"></p>
+              </div>
+            </li>
+
+            <li class="flex justify-between gap-x-6 py-5" v-if="market.imports.length">
+              <div class="flex min-w-0 gap-x-4">
+                <div class="min-w-0 flex-auto">
+                  <p class="text-sm font-semibold text-white">Imports</p>
+                  <div class="mt-1 text-xs leading-5 text-gray-300">
+                    Import goods are consumed at the waypoint, and typically have a higher sell price.<br/>
+                    <div class="tooltip" :data-tip="imp.description" v-for="imp in market.imports">
+                      <span class="badge badge-primary mr-1 mb-1">{{ imp.symbol }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                <p class="text-sm leading-6 text-white"></p>
+                <p class="text-sm leading-5 text-white mt-2"></p>
+              </div>
+            </li>
+
+            <li class="flex justify-between gap-x-6 py-5" v-if="market.exchange.length">
+              <div class="flex min-w-0 gap-x-4">
+                <div class="min-w-0 flex-auto">
+                  <p class="text-sm font-semibold text-white">Exchange</p>
+                  <div class="mt-1 text-xs leading-5 text-gray-300">
+                    Another type of market listing includes exchange goods. These goods are neither consumed nor produced at the waypoint. Instead, they are traded strictly among agents.<br/>
+                    <div class="tooltip" :data-tip="ex.description" v-for="ex in market.exchange">
+                      <span class="badge badge-primary mr-1 mb-1">{{ ex.symbol }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                <p class="text-sm leading-6 text-white"></p>
+                <p class="text-sm leading-5 text-white mt-2"></p>
+              </div>
+            </li>
+          </ul>
+
         </template>
       </Box>
     </div>
