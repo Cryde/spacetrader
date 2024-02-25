@@ -5,4 +5,6 @@ class Route
 {
     public \DateTimeImmutable $arrival;
     public \DateTimeImmutable $departureTime;
+    public RouteItem $origin;
+    public RouteItem $destination;
 }
