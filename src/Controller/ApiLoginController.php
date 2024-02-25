@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Builder\User\UserTokenBuilder;
 use App\Entity\User\User;
-use App\Repository\User\UserTokenRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
